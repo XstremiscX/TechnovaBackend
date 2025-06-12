@@ -16,6 +16,24 @@ export class SellerUsersController {
     }
   }
 
+  @Post('change-password/:id')
+  changePassword(@Param('id') id:string, @Body() newPassword: JSON) {
+    try{
+      return this.sellerUsersService.changePassword(id, newPassword);
+    }catch (error) {
+      throw new Error(`Error changing password for seller user with id ${id}: ${error.message}`);
+    }
+  }
+
+  @Patch('verify/:id')
+  verifyUser(@Param('id') id:string){
+    try{
+      return this.sellerUsersService.verifyUser(id);
+    }catch (error) {
+      throw new Error(`Error verifying seller user with id ${id}: ${error.message}`);
+    }
+  }
+
   @Get(':id')
   findInfo(@Param('id') id: string) {
     try{

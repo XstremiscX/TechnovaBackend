@@ -49,6 +49,33 @@ export class SellerUsersService {
     }
   }
 
+  // Método que se encarga de cambiar la contraseña de un usuario vendedor.
+  changePassword(id:string, newPassword: JSON) {
+    const query = "UPDATE seller_users SET user_password = $1 WHERE seller_id = $2";
+    const new_password = newPassword['new_password']; // Extrae la nueva contraseña del objeto JSON
+    const params = [new_password, id];
+
+    try{
+      const res = this.databaseService.query(query, params);
+      return res;
+    }catch (error) {
+      throw new Error(`Error changing password for seller user: ${error.message}`);
+    }
+  }
+
+  // Método que se encarga de verificar un usuario vendedor.
+  verifyUser(id: string) {
+    const query = "UPDATE seller_users SET verified = true WHERE seller_id = $1";
+    const params = [id];
+
+    try{
+      const res = this.databaseService.query(query, params);
+      return res;
+    }catch (error) {
+      throw new Error(`Error verifying seller user: ${error.message}`);
+    }
+  }
+
   // Método que se encarga de buscar la información publica de un usuario vendedor por su ID.
   // Este método no devuelve la contraseña del usuario, ya que esta no debe ser expuesta.
   // Tampoco devuelve el estado de verificación ya que este estado no debe ser posible de modificar por el propio usuario.
