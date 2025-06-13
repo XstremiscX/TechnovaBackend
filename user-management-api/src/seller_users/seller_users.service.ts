@@ -13,7 +13,7 @@ export class SellerUsersService {
   
   // Método que se encargara de la creación de un nuevo usuario vendedor
   create(createSellerUserDto: CreateSellerUserDto) {
-    const { seller_name, 
+    const { seller_name, // Si el usuario es de tipo empresa, seller_name sera null
       company_name, 
       address, 
       user_password, 
@@ -133,4 +133,5 @@ export class SellerUsersService {
       throw new Error(`Error removing seller user: ${error.message}`);
     }
   }
+
 }

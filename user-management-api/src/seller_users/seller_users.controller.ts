@@ -2,13 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { SellerUsersService } from './seller_users.service';
 import { CreateSellerUserDto } from './dto/create-seller_user.dto';
 import { UpdateSellerUserDto } from './dto/update-seller_user.dto';
+import { XssAtackPreventionPipe } from 'src/globalpipes/xss-atack-prevention/xss-atack-prevention.pipe';
 
 @Controller('seller-users')
 export class SellerUsersController {
   constructor(private readonly sellerUsersService: SellerUsersService) {}
 
   @Post()
-  create(@Body() createSellerUserDto: CreateSellerUserDto) {
+  create(@Body(XssAtackPreventionPipe) createSellerUserDto: CreateSellerUserDto) {
     try{
       this.sellerUsersService.create(createSellerUserDto);
     }catch (error) {
@@ -17,7 +18,7 @@ export class SellerUsersController {
   }
 
   @Post('change-password/:id')
-  changePassword(@Param('id') id:string, @Body() newPassword: JSON) {
+  changePassword(@Param('id') id:string, @Body(XssAtackPreventionPipe) newPassword: JSON) {
     try{
       return this.sellerUsersService.changePassword(id, newPassword);
     }catch (error) {
@@ -44,7 +45,7 @@ export class SellerUsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSellerUserDto: UpdateSellerUserDto) {
+  update(@Param('id') id: string, @Body(XssAtackPreventionPipe) updateSellerUserDto: UpdateSellerUserDto) {
     return this.sellerUsersService.update(id, updateSellerUserDto);
   }
 
