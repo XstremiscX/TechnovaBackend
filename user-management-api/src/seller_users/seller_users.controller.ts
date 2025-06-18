@@ -3,18 +3,17 @@ import { SellerUsersService } from './seller_users.service';
 import { CreateSellerUserDto } from './dto/create-seller_user.dto';
 import { UpdateSellerUserDto } from './dto/update-seller_user.dto';
 import { XssAtackPreventionPipe } from 'src/globalpipes/xss-atack-prevention/xss-atack-prevention.pipe';
+import { LogInSellerDto } from './dto/logIn-seller.dto';
 
 @Controller('seller-users')
 export class SellerUsersController {
   constructor(private readonly sellerUsersService: SellerUsersService) {}
 
   @Post()
-  create(@Body(XssAtackPreventionPipe) createSellerUserDto: CreateSellerUserDto) {
-    try{
-      this.sellerUsersService.create(createSellerUserDto);
-    }catch (error) {
-      throw new Error(`Error creating seller user: ${error.message}`);
-    }
+  async create(@Body(XssAtackPreventionPipe) createSellerUserDto: CreateSellerUserDto) {
+    
+    return await this.sellerUsersService.create(createSellerUserDto);
+
   }
 
   @Post('change-password/:id')
@@ -52,5 +51,10 @@ export class SellerUsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     this.sellerUsersService.remove(id);
+  }
+
+  @Post('login')
+  async logIn(@Body(XssAtackPreventionPipe) loginData: LogInSellerDto) {
+    return await this.sellerUsersService.login(loginData);
   }
 }
