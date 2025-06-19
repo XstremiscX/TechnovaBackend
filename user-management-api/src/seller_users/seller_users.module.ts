@@ -7,7 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
   controllers: [SellerUsersController],
   imports: [DatabaseModule,JwtModule.register({
-    secret: process.env.JWT_SECRET || "defaultSecret"})],
+    secret: process.env.JWT_SECRET,
+    signOptions: { expiresIn: '1h' }})],
   providers: [SellerUsersService]
 })
 export class SellerUsersModule {}

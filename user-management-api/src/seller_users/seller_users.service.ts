@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'; // Importa la función uuidv4 para generar 
 import * as bcrypt from 'bcrypt'; // Importa bcrypt para hashear contraseñas
 import { JwtService } from '@nestjs/jwt'; // Importa JwtService para manejar tokens JWT
 import { LogInSellerDto } from './dto/logIn-seller.dto';
+import * as nodemailer from 'nodemailer'; // Importa nodemailer para enviar correos electrónicos
 
 //Servicio que se encargara de manejar el CRUD de los usuarios vendedores
 @Injectable()
@@ -35,6 +36,36 @@ export class SellerUsersService {
       }
     }catch (error) {
       throw new Error(`${error.message} - Error checking if user exists`);
+    }
+  }
+
+  //Método que se encargara de enviar el email de verificación.
+
+  async sendVerificationMail(email: string, newId: string){
+    try{
+      const transporter = nodemailer.createTransport({
+        service:"gmail",
+        auth: {
+          user: "safirjoseproyecto@gmail.com",
+          pass: process.env.GOOGLE_APP_PASSWORD
+        },
+        tls:{
+          rejectUnauthorized: false
+        }
+      })
+
+      const info = await transporter.sendMail({
+        from: '"proyecto Safir Jose"<safirjoseproyecto@gmail.com>',
+        to: email,
+        subject: "Verificación de cuenta",
+        text: "Porfavor verifica tu correo electronico haciendo click en el botón de abajo",
+        html: `<a href="http://localhost:3000/seller-users/verify/${newId}">Verificar correo</a>`
+      })
+
+      return true;
+
+    }catch(error){
+      throw error;
     }
   }
 
@@ -78,12 +109,15 @@ export class SellerUsersService {
         const query = "INSERT INTO seller_users (seller_id, seller_name, company_name, address, user_password, email, user_image, cellphone_number, verified, registration_date, user_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
 
         this.databaseService.query(query, params);
+
+        const mailSended =  await this.sendVerificationMail(email,newId);
+
         return "User created successfully"; // Retorna un mensaje de éxito
       }
 
     }catch (error) {
 
-      console.log(error.name);
+      console.log(error);
       throw new HttpException(`Error creating seller user: ${error.message}`, HttpStatus.CONFLICT);
 
     }
@@ -207,7 +241,7 @@ export class SellerUsersService {
       
       const {email, password} = loginData; // Extrae el email y la contraseña del objeto JSON
 
-      const query = "SELECT * FROM seller_users WHERE email = $1"
+      const query = "SELECT seller_id, verified, user_password FROM seller_users WHERE email = $1"
       const params = [email];
 
       const userData = await this.databaseService.query(query, params); // Se espera a obtener los datos del usuario con ese email y se almacena en userData
@@ -217,14 +251,17 @@ export class SellerUsersService {
       }else{
         const hashedPasword = userData[0].user_password; // Obtiene la contraseña hasheada del usuario
         const isPasswordValid = bcrypt.compareSync(password, hashedPasword); // Compara la contraseña proporcionada con la contraseña hasheada
-        if(isPasswordValid){
-          const {sellerr_id} = userData[0];
-          const payload = {sellerr_id};
-
-          return {accessToken: await this.jwtService.signAsync(payload)};
-
+        if(userData[0].verified === false){
+          throw new HttpException('User not verified', HttpStatus.UNAUTHORIZED); // Si el usuario no está verificado, se lanza una 
         }else{
-          throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED); // Si la contraseña no es válida, se lanza una excepción de tipo Unauthorized
+          if(isPasswordValid){
+          const {seller_id} = userData[0];
+
+          return {accessToken: await this.jwtService.signAsync({seller_id})};
+
+          }else{
+            throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED); // Si la contraseña no es válida, se lanza una excepción de tipo Unauthorized
+          }
         }
       }
 
