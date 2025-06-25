@@ -40,7 +40,6 @@ export class SellerUsersService {
   }
 
   //Método que se encargara de enviar el email de verificación.
-
   async sendVerificationMail(email: string, newId: string){
     try{
       const transporter = nodemailer.createTransport({
@@ -65,7 +64,7 @@ export class SellerUsersService {
       return true;
 
     }catch(error){
-      throw error;
+      throw new Error(error.message);
     }
   }
 
@@ -110,14 +109,13 @@ export class SellerUsersService {
 
         this.databaseService.query(query, params);
 
-        const mailSended =  await this.sendVerificationMail(email,newId);
+        await this.sendVerificationMail(email,newId);
 
         return "User created successfully"; // Retorna un mensaje de éxito
       }
 
     }catch (error) {
 
-      console.log(error);
       throw new HttpException(`Error creating seller user: ${error.message}`, HttpStatus.CONFLICT);
 
     }
@@ -168,12 +166,12 @@ export class SellerUsersService {
   // Método que se encarga de buscar la información publica de un usuario vendedor por su ID.
   // Este método no devuelve la contraseña del usuario, ya que esta no debe ser expuesta.
   // Tampoco devuelve el estado de verificación ya que este estado no debe ser posible de modificar por el propio usuario.
-  findInfo(id: string){
+  async findInfo(id: string){
     const query = "SELECT seller_name, company_name, address, email, user_image, cellphone_number, user_type FROM seller_users WHERE seller_id = $1";
     const params = [id];
 
     try{
-      const res = this.databaseService.query(query, params);
+      const res = await this.databaseService.query(query, params);
       if(!res){
         throw new Error(`Seller user with id ${id} not found`);
       }else{
@@ -250,17 +248,17 @@ export class SellerUsersService {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND); // EN caso de que no se encuentre un usuario se laza una excepción de tipo NotFound
       }else{
         const hashedPasword = userData[0].user_password; // Obtiene la contraseña hasheada del usuario
-        const isPasswordValid = bcrypt.compareSync(password, hashedPasword); // Compara la contraseña proporcionada con la contraseña hasheada
         if(userData[0].verified === false){
           throw new HttpException('User not verified', HttpStatus.UNAUTHORIZED); // Si el usuario no está verificado, se lanza una 
         }else{
+          const isPasswordValid = bcrypt.compareSync(password, hashedPasword); // Compara la contraseña proporcionada con la contraseña hasheada
           if(isPasswordValid){
           const {seller_id} = userData[0];
 
           return {accessToken: await this.jwtService.signAsync({seller_id})};
 
           }else{
-            throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED); // Si la contraseña no es válida, se lanza una excepción de tipo Unauthorized
+            throw new HttpException('Invalid user or password', HttpStatus.UNAUTHORIZED); // Si la contraseña no es válida, se lanza una excepción de tipo Unauthorized
           }
         }
       }
