@@ -20,30 +20,19 @@ export class SellerUsersController {
   @Post('change-password/:id')
   @UseGuards(SellerUsersGuard)
   changePassword(@Param('id') id:string, @Body(XssAtackPreventionPipe) newPassword: JSON) {
-    try{
-      return this.sellerUsersService.changePassword(id, newPassword);
-    }catch (error) {
-      throw new Error(`Error changing password for seller user with id ${id}: ${error.message}`);
-    }
+
+    return this.sellerUsersService.changePassword(id, newPassword);
   }
 
   @Get('/verify/:id')
   verifyUser(@Param('id') id:string){
-    try{
-      return this.sellerUsersService.verifyUser(id);
-    }catch (error) {
-      throw new Error(`Error verifying seller user with id ${id}: ${error.message}`);
-    }
+    return this.sellerUsersService.verifyUser(id);
   }
 
   @Get(':id')
   @UseGuards(SellerUsersGuard)
   findInfo(@Param('id') id: string) {
-    try{
-      return this.sellerUsersService.findInfo(id);
-    }catch (error) {
-      throw new Error(`Error finding seller user with id ${id}: ${error.message}`);
-    }
+    return this.sellerUsersService.findInfo(id);
   }
 
   @Patch(':id')

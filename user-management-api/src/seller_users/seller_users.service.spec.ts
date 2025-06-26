@@ -12,7 +12,6 @@ import { SellerUsersService } from './seller_users.service';
 import { DatabaseService } from 'src/database/database.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { HttpException } from '@nestjs/common';
 
 describe('SellerUsersService', () => {
   let service: SellerUsersService;
