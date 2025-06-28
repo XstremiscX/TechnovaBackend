@@ -1,11 +1,12 @@
 import { Module } from "@nestjs/common";
 import { DatabaseService } from './database/database.service';
 import { DatabaseModule } from './database/database.module';
-import { CategoriesModule } from './categories/categories.module';
 import { SellerUsersModule } from './seller_users/seller_users.module';
+import { CategoriesModule } from './categories/categories.module';
+import { BrandsModule } from './brands/brands.module';
 
 @Module({
-    imports : [DatabaseModule, CategoriesModule, SellerUsersModule],
+    imports : [DatabaseModule, CategoriesModule, SellerUsersModule, BrandsModule],
     providers: [DatabaseService]
 })
 export class AppModule{}
