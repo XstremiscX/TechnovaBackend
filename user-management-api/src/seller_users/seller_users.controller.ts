@@ -4,7 +4,7 @@ import { CreateSellerUserDto } from './dto/create-seller_user.dto';
 import { UpdateSellerUserDto } from './dto/update-seller_user.dto';
 import { XssAtackPreventionPipe } from 'src/globalpipes/xss-atack-prevention/xss-atack-prevention.pipe';
 import { LogInSellerDto } from './dto/logIn-seller.dto';
-import { SellerUsersGuard } from './seller_users.guard';
+import { TokenVerificationGuard } from 'src/globalguards/token_verification.guard';
 
 @Controller('seller-users')
 export class SellerUsersController {
@@ -18,7 +18,7 @@ export class SellerUsersController {
   }
 
   @Post('change-password/:id')
-  @UseGuards(SellerUsersGuard)
+  @UseGuards(TokenVerificationGuard)
   changePassword(@Param('id') id:string, @Body(XssAtackPreventionPipe) newPassword: JSON) {
 
     return this.sellerUsersService.changePassword(id, newPassword);
@@ -30,19 +30,19 @@ export class SellerUsersController {
   }
 
   @Get(':id')
-  @UseGuards(SellerUsersGuard)
+  @UseGuards(TokenVerificationGuard)
   findInfo(@Param('id') id: string) {
     return this.sellerUsersService.findInfo(id);
   }
 
   @Patch(':id')
-  @UseGuards(SellerUsersGuard)
+  @UseGuards(TokenVerificationGuard)
   update(@Param('id') id: string, @Body(XssAtackPreventionPipe) updateSellerUserDto: UpdateSellerUserDto) {
     return this.sellerUsersService.update(id, updateSellerUserDto);
   }
 
   @Delete(':id')
-  @UseGuards(SellerUsersGuard)
+  @UseGuards(TokenVerificationGuard)
   remove(@Param('id') id: string) {
     return this.sellerUsersService.remove(id);
   }

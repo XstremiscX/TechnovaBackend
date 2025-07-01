@@ -1,11 +1,9 @@
 import { CanActivate, ExecutionContext, HttpException, Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
 
 
 @Injectable()
-export class SellerUsersGuard implements CanActivate {
+export class TokenVerificationGuard implements CanActivate {
 
   constructor(private jwtService:JwtService){}
 
