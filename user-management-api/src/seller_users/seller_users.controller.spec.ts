@@ -3,7 +3,7 @@ import { SellerUsersController } from './seller_users.controller';
 import { SellerUsersService } from './seller_users.service';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
-import { SellerUsersGuard } from './seller_users.guard';
+import { TokenVerificationGuard } from 'src/globalguards/token_verification.guard';
 
 describe('SellerUsersController', () => {
   let controller: SellerUsersController;
@@ -100,7 +100,7 @@ describe('SellerUsersController', () => {
       expect(res).toBe(expectedResult);
     })
 
-    it("Debería tener el decorador UseGuards con el guard: SellerUsersGuard",()=>{
+    it("Debería tener el decorador UseGuards con el guard: TokenVerificationGuard",()=>{
       
       //Creamos una instancia de la calse Reflector
       const reflector = new Reflector();
@@ -108,11 +108,11 @@ describe('SellerUsersController', () => {
       //Obtenemos los guards que se estan usando en el metodo.
       const guards = Reflect.getMetadata('__guards__',controller.changePassword);
 
-      //Verificamos si el guard SellerUsersGuard esta entre los utilizados.
-      const usesSellerUsersGuard = guards?.some((e) => e.name === SellerUsersGuard.name);
+      //Verificamos si el guard TokenVerificationGuard esta entre los utilizados.
+      const usesTokenVerificationGuard = guards?.some((e) => e.name === TokenVerificationGuard.name);
 
       //Testeamos si se usa el guard.
-      expect(usesSellerUsersGuard).toBe(true);
+      expect(usesTokenVerificationGuard).toBe(true);
 
     })
   })
@@ -168,7 +168,7 @@ describe('SellerUsersController', () => {
       expect(res).toBeDefined;
     })
 
-    it("Debería tener el decorador UseGuards con el guard: SellerUsersGuard",()=>{
+    it("Debería tener el decorador UseGuards con el guard: TokenVerificationGuard",()=>{
       
       //Creamos una instancia de la calse Reflector
       const reflector = new Reflector();
@@ -176,11 +176,11 @@ describe('SellerUsersController', () => {
       //Obtenemos los guards que se estan usando en el metodo.
       const guards = Reflect.getMetadata('__guards__',controller.changePassword);
 
-      //Verificamos si el guard SellerUsersGuard esta entre los utilizados.
-      const usesSellerUsersGuard = guards?.some((e) => e.name === SellerUsersGuard.name);
+      //Verificamos si el guard TokenVerificationGuard esta entre los utilizados.
+      const usesTokenVerificationGuard = guards?.some((e) => e.name === TokenVerificationGuard.name);
 
       //Testeamos si se usa el guard.
-      expect(usesSellerUsersGuard).toBe(true);
+      expect(usesTokenVerificationGuard).toBe(true);
 
     })
   })
@@ -221,7 +221,7 @@ describe('SellerUsersController', () => {
       expect(res).toBe(expectedResult);
     })
 
-    it("Debería tener el decorador UseGuards con el guard: SellerUsersGuard",()=>{
+    it("Debería tener el decorador UseGuards con el guard: TokenVerificationGuard",()=>{
       
       //Creamos una instancia de la calse Reflector
       const reflector = new Reflector();
@@ -229,11 +229,11 @@ describe('SellerUsersController', () => {
       //Obtenemos los guards que se estan usando en el metodo.
       const guards = Reflect.getMetadata('__guards__',controller.changePassword);
 
-      //Verificamos si el guard SellerUsersGuard esta entre los utilizados.
-      const usesSellerUsersGuard = guards?.some((e) => e.name === SellerUsersGuard.name);
+      //Verificamos si el guard TokenVerificationGuard esta entre los utilizados.
+      const usesTokenVerificationGuard = guards?.some((e) => e.name === TokenVerificationGuard.name);
 
       //Testeamos si se usa el guard.
-      expect(usesSellerUsersGuard).toBe(true);
+      expect(usesTokenVerificationGuard).toBe(true);
 
     })
   })
@@ -261,7 +261,7 @@ describe('SellerUsersController', () => {
       expect(res).toBe(expectedResult);
     })
 
-    it("Debería tener el decorador UseGuards con el guard: SellerUsersGuard",()=>{
+    it("Debería tener el decorador UseGuards con el guard: TokenVerificationGuard",()=>{
       
       //Creamos una instancia de la calse Reflector
       const reflector = new Reflector();
@@ -269,11 +269,11 @@ describe('SellerUsersController', () => {
       //Obtenemos los guards que se estan usando en el metodo.
       const guards = Reflect.getMetadata('__guards__',controller.changePassword);
 
-      //Verificamos si el guard SellerUsersGuard esta entre los utilizados.
-      const usesSellerUsersGuard = guards?.some((e) => e.name === SellerUsersGuard.name);
+      //Verificamos si el guard TokenVerificationGuard esta entre los utilizados.
+      const usesTokenVerificationGuard = guards?.some((e) => e.name === TokenVerificationGuard.name);
 
       //Testeamos si se usa el guard.
-      expect(usesSellerUsersGuard).toBe(true);
+      expect(usesTokenVerificationGuard).toBe(true);
 
     })
   })

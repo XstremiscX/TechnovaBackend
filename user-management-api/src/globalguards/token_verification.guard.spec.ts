@@ -1,9 +1,9 @@
 import { ExecutionContext, HttpException } from '@nestjs/common';
-import { SellerUsersGuard } from './seller_users.guard';
+import { TokenVerificationGuard } from './token_verification.guard';
 import { JwtService } from '@nestjs/jwt';
 
-describe('SellerUsersGuard', () => {
-  let guard: SellerUsersGuard;
+describe('TokenVerificationGuard', () => {
+  let guard: TokenVerificationGuard;
   let mockJwtService: Partial<JwtService>;
 
   const mockContext = (authorization?: string) =>
@@ -19,7 +19,7 @@ describe('SellerUsersGuard', () => {
     mockJwtService = {
       verifyAsync: jest.fn(),
     };
-    guard = new SellerUsersGuard(mockJwtService as JwtService);
+    guard = new TokenVerificationGuard(mockJwtService as JwtService);
   });
 
   it('debería permitir acceso si el token es válido', async () => {

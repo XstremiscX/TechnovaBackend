@@ -16,23 +16,20 @@ export class ProductsController {
     return this.productsService.create(createProductDto, token);
   }
 
+  @Post('/my-products')
+  @UseGuards(TokenVerificationGuard)
+  listSellerProducts(@Req() req:Request){
+
+    const token = req.headers['authorization'];
+
+    return this.productsService.listSellerProducts(token);
+
+  }
+
   @Get()
   listAll() {
     return this.productsService.listAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
-  }
 }

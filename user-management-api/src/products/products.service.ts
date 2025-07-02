@@ -1,6 +1,5 @@
-import { ExecutionContext, HttpException, HttpStatus, Injectable, ParseBoolPipe } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, ParseBoolPipe } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as genuuid } from 'uuid';
@@ -91,7 +90,7 @@ export class ProductsService {
       //En caso de ser indefinido o con un tamaño igual a 0 entonces arroja un error.
       if(typeof res === undefined || res.length === 0){
 
-        throw new HttpException("Products not founds", HttpStatus.NOT_FOUND);
+        throw new HttpException("Products not found", HttpStatus.NOT_FOUND);
 
       }else{
 
@@ -106,15 +105,44 @@ export class ProductsService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async listSellerProducts(token: string){
+
+    try{
+
+      //Verificamos el token y extraemos la información.
+      const tokenInfo = await this.jwtService.verifyAsync(token,{secret: process.env.JWT_SECRET});
+
+      //Obtenemos el id del vendedor.
+      const {seller_id} = tokenInfo;
+
+      const query = "SELECT * FROM products WHERE seller_id = $1"; 
+
+      //Ejecutamos la llamada a la base de datos y almacenamos los datos devueltos.
+      const res = await this.databaseService.query(query,[seller_id]);
+
+      //Verificamos que si haya información, en caso de no haber entonces se arrojara un error.
+      if(res === undefined){
+
+        throw new HttpException("An error has occurred during the data extraction.",HttpStatus.INTERNAL_SERVER_ERROR);
+
+      }else if(res.length === 0){
+
+        return "No products avaibles.";
+
+      }else{
+
+        //Retornamos un objeto con los datos obtenidos.
+        return res
+
+      }
+
+    }catch(error){
+
+      throw error;
+
+    }
+
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
-  }
 }
