@@ -5,9 +5,10 @@ import { SellerUsersModule } from './seller_users/seller_users.module';
 import { CategoriesModule } from './categories/categories.module';
 import { BrandsModule } from './brands/brands.module';
 import { ProductsModule } from './products/products.module';
+import { BuyerUsersModule } from './buyer_users/buyer_users.module';
 
 @Module({
-    imports : [DatabaseModule, CategoriesModule, SellerUsersModule, BrandsModule, ProductsModule],
+    imports : [DatabaseModule, CategoriesModule, SellerUsersModule, BrandsModule, ProductsModule, BuyerUsersModule],
     providers: [DatabaseService]
 })
 export class AppModule{}

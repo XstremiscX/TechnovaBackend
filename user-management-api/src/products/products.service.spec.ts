@@ -366,4 +366,80 @@ describe('ProductsService', () => {
     })
 
   })
+
+  describe("updateProduct()",()=>{
+
+    //Creamos un updateProductDto de pruebas.
+    const updateProductDto = {
+      "product_id": "85e56541-0323-4761-a495-0b8fbd8059d9",
+      "seller_id": "b663f33c-ae76-49bd-a185-752c49f867dc",
+      "category_id": "4880d444-b81c-41c7-8a6e-5381037883e5",
+      "brand_id": "4119bd51-226d-4e3d-8775-26f6665f1424",
+      "product_name": "ps5",
+      "price": 31.2,
+      "quantity": 12,
+      "description": "description 1",
+      "product_image": "C:/productImage.png",
+      "product_status": "true"
+    }
+    
+    it("Debería actualizar correctamente los datos del producto y devolver un objeto con los datos actualizados", async ()=>{
+
+      //Mockeamos el resultado de la base de datos.
+      mockDb.query.mockResolvedValue(
+        {
+          "product_id": "85e56541-0323-4761-a495-0b8fbd8059d9",
+          "seller_id": "b663f33c-ae76-49bd-a185-752c49f867dc",
+          "category_id": "4880d444-b81c-41c7-8a6e-5381037883e5",
+          "brand_id": "4119bd51-226d-4e3d-8775-26f6665f1424",
+          "product_name": "ps5",
+          "price": 31.2,
+          "quantity": 12,
+          "description": "description 1",
+          "product_image": "C:/productImage.png",
+          "product_status": "true"
+        }
+      )
+
+      //Testeamos el metodo y almacenamos el resultado en una variable.
+      const res = await service.updateProduct(updateProductDto);
+
+      //Testeamos que el resultado este definido y sea el esperado.
+      expect(res).toBeDefined();
+      expect(res).toEqual(updateProductDto);
+
+      //Testeamos que la llamada a la base de datos se haya hecho con el query correcto y parametros.
+      expect(mockDb.query).toHaveBeenCalledWith(
+        expect.stringContaining("UPDATE products SET brand_id"),
+        expect.any(Array)
+      )
+
+    })
+
+    it("Debería arrojar un error si el resultado devuelto es indefinido", async ()=>{
+
+      //Mockeamos el resultado de la llamada a la base de datos para que devuelva indefinido.
+      mockDb.query.mockResolvedValue(undefined);
+
+      //Testeamos el metodo esperando que devuelva un HttpException 500.
+      await expect(service.updateProduct(updateProductDto)).rejects.toThrow(expect.objectContaining({
+        message: "An error has occurred during the product update",
+        status: 500
+      }))
+
+    })
+
+    it("Debería arrojar un error en caso de algún problema ocurrido durante le jecución del código",async()=>{
+
+      //Mockeamos el proceso de la base de datos para que arroje un error durante la ejecución.
+      mockDb.query.mockImplementation(()=>{
+        throw new Error("An error has occurred.")
+      })
+
+      //Testeamos el metodo esperando que arroje el error de prueba-
+      await expect(service.updateProduct(updateProductDto)).rejects.toThrow("An error has occurred.")
+
+    })
+
+  })
 });

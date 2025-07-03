@@ -3,6 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as genuuid } from 'uuid';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -133,6 +134,57 @@ export class ProductsService {
 
         //Retornamos un objeto con los datos obtenidos.
         return res
+
+      }
+
+    }catch(error){
+
+      throw error;
+
+    }
+
+  }
+
+  async updateProduct(updateProductDto:UpdateProductDto){
+
+    try{
+
+      const {
+        product_id,
+        category_id,
+        brand_id,
+        product_name,
+        price,
+        quantity,
+        description,
+        product_image,
+        product_status
+      } = updateProductDto
+
+      const params = [
+        brand_id,
+        category_id,
+        product_name,
+        price,
+        quantity,
+        description,
+        product_image,
+        product_status,
+        product_id
+      ]
+
+      const query = "UPDATE products SET brand_id = $1, category_id = $2, product_name = $3, price = $4, quantity = $5, description = $6, product_image = $7, product_status = $8 WHERE product_id = $9 RETURNING *"
+
+      //Acualizamos el producto y recibimos un objeto con todos los datos actualizados.
+      const res = await this.databaseService.query(query,params);
+
+      if(res == undefined){
+
+        throw new HttpException("An error has occurred during the product update",HttpStatus.INTERNAL_SERVER_ERROR);
+
+      }else{
+
+        return res;
 
       }
 

@@ -26,6 +26,14 @@ export class ProductsController {
 
   }
 
+  @Post('/update-product')
+  @UseGuards(TokenVerificationGuard)
+  updateProduct(@Body(XssAtackPreventionPipe) updateProductDto:UpdateProductDto){
+
+    return this.productsService.updateProduct(updateProductDto);
+
+  }
+
   @Get()
   listAll() {
     return this.productsService.listAll();

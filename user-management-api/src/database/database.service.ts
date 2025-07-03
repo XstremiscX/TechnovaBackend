@@ -19,8 +19,8 @@ export class DatabaseService {
         });
     }
 
-    // Metodo que gestiona la consulta a la base de datos recibiendo un query SQL y parametros opcionales.
-    async query(text: string, params?: any[]){
+    // Metodo que gestiona la consulta a la base de datos recibiendo un query SQL y parametros.
+    async query(text: string, params: any[]){
         //Nos conectamos a la base de datos.
         const client = await this.pool.connect()
         
