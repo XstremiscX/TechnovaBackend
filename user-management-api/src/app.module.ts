@@ -6,9 +6,10 @@ import { CategoriesModule } from './categories/categories.module';
 import { BrandsModule } from './brands/brands.module';
 import { ProductsModule } from './products/products.module';
 import { BuyerUsersModule } from './buyer_users/buyer_users.module';
+import { SalesModule } from './sales/sales.module';
 
 @Module({
-    imports : [DatabaseModule, CategoriesModule, SellerUsersModule, BrandsModule, ProductsModule, BuyerUsersModule],
+    imports : [DatabaseModule, CategoriesModule, SellerUsersModule, BrandsModule, ProductsModule, BuyerUsersModule, SalesModule],
     providers: [DatabaseService]
 })
 export class AppModule{}
