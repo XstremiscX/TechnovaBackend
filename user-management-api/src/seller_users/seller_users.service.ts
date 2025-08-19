@@ -134,9 +134,14 @@ export class SellerUsersService {
 
   // Método que se encarga de cambiar la contraseña de un usuario vendedor.
   changePassword(id:string, newPassword: JSON) {
-    const query = "UPDATE seller_users SET user_password = $1 WHERE seller_id = $2";
+    const query = "UPDAT seller_users SET user_password = $1 WHERE seller_id = $2";
+
     const new_password = newPassword['new_password']; // Extrae la nueva contraseña del objeto JSON
-    const params = [new_password, id];
+
+    const salt = bcrypt.genSaltSync(10); // Genera un salt para hashear la contraseña
+    const hashedPassword = bcrypt.hashSync(new_password, salt); // Hashea la contraseña del usuario
+    
+    const params = [hashedPassword, id];
 
     try{
       this.databaseService.query(query, params);

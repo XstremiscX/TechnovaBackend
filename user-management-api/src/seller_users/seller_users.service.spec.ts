@@ -28,7 +28,7 @@ describe('SellerUsersService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [SellerUsersService,
         {
-         provide: DatabaseService,
+          provide: DatabaseService,
           useValue: mockDb
         },
         {
@@ -122,7 +122,7 @@ describe('SellerUsersService', () => {
     
     //Creamos los parametros que recibiria el metodo y les asignamos datos de prueba.
     const id = "userId";
-    const newPassword = JSON.parse('{"new_password":"newPassword"}');
+    const newPassword = JSON.parse('{"new_password":"asdasdasd"}');
     
     it("Debería cambiar la contraseña satisfactoriamente y regresar el mensaje: User password changed successfully", async ()=>{
 
@@ -130,7 +130,7 @@ describe('SellerUsersService', () => {
       mockDb.query.mockResolvedValue([]);
 
       //Guardamos el resultado de la ejecución del metodo a testear.
-      const res = await service.changePassword(id,newPassword);
+      const res = service.changePassword(id,newPassword);
 
       //Verificamos que el mensaje de exito sea igual al esperado.
       expect(res).toEqual("User password changed successfully")

@@ -83,7 +83,7 @@ export class ProductsService {
 
     try{
 
-      const query = "SELECT * FROM products";
+      const query = "SELECT p.product_id, p.product_name, p.price, p.product_image, b.brand_name, c.category_name FROM products as p JOIN brands as b ON b.brand_id = p.brand_id JOIN categories as c ON c.category_id = p.category_id WHERE product_status = true";
 
       //Guardamos los resultados de la busqueda en la variable.
       const res = await this.databaseService.justQuery(query);
@@ -196,5 +196,30 @@ export class ProductsService {
 
   }
 
+  async getProductDetail(id:string){
+    try{
+
+      const query = "SELECT p.*, b.brand_name, c.category_name, s.seller_name FROM products as p JOIN brands as b ON b.brand_id = p.brand_id JOIN categories as c ON c.category_id = p.category_id JOIN seller_users as s ON s.seller_id = p.seller_id WHERE product_id = $1";
+
+      const res = await this.databaseService.query(query,[id]);
+
+      if(res.length === 0){
+        throw new HttpException("Product not found",HttpStatus.NOT_FOUND);
+      }else{
+
+        return res;
+
+      }
+
+    }catch(error){
+
+      if(error.name === "HttpException"){
+        throw error;
+      }else{
+        throw new HttpException("An error has occurred getting the product details",HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+
+    }
+  }
 
 }

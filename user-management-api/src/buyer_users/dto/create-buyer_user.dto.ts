@@ -1,34 +1,31 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateBuyerUserDto {
+    
+    @IsString()
+    @IsNotEmpty()
+    user_name: string;
 
     @IsString()
     @IsNotEmpty()
-    name:string;
+    user_lastname: string;
 
     @IsString()
     @IsNotEmpty()
-    last_name:string;
+    user_password: string;
 
     @IsString()
     @IsNotEmpty()
-    password: string;
-
-    @IsEmail()
-    @IsString()
-    @IsNotEmpty()
-    email:string;
+    email: string;
 
     @IsString()
     @IsNotEmpty()
-    user_image:string;
+    @IsOptional()
+    user_image?: string;
 
     @IsString()
     @IsNotEmpty()
-    cellphone_number:string;
+    cellphone_number: string;
 
-    @IsBoolean()
-    @IsNotEmpty()
-    verified:boolean;
 
 }
