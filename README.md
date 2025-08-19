@@ -25,7 +25,7 @@ Welcome to the backend of an e-commerce platform built with **NestJS** and **Pos
 - **Framework**: NestJS
 - **Languages**: TypeScript, JavaScript
 - **Database**: PostgreSQL (using `pg` driver)
-- **Authentication**: JWT (`@nestjs/jwt`)
+- **Authentication**: JWT (`@nestjs/jwt`, `passport-jwt`)
 - **Email**: Nodemailer for verification emails
 - **Validation**: class-validator, class-transformer
 - **Other**: dotenv for environment variables, uuid for unique IDs, cors for cross-origin requests
@@ -54,7 +54,7 @@ Follow these steps to set up and run the project locally:
    ```bash
    npm install
    ```
-   This installs production dependencies (e.g., `@nestjs/core`, `@nestjs/jwt`, `pg`, `nodemailer`, `bcrypt`) and development dependencies (e.g., `@nestjs/cli`, `jest`, `eslint`, `prettier`). No additional `npm install` commands are needed, as `package.json` includes everything.
+   This command installs all production dependencies (e.g., `@nestjs/core`, `@nestjs/jwt`, `pg`, `nodemailer`, `bcrypt`) and development dependencies (e.g., `@nestjs/cli`, `jest`, `eslint`, `prettier`). No additional `npm install` commands are needed, as `package.json` includes everything required.
 
 3. **Set Up Environment Variables**:
    Create a `.env` file in the project root based on the `.env.example` (if provided) or use the following template:
@@ -84,14 +84,17 @@ Follow these steps to set up and run the project locally:
      ```bash
      psql -U your_postgres_user -c "CREATE DATABASE ecommerce_db;"
      ```
-   - If using an ORM like TypeORM or Prisma, run migrations to set up tables:
+   - Run the database schema to create tables:
+     ```bash
+     psql -U your_postgres_user -d ecommerce_db -f database/database-schema.sql
+     ```
+     Download the schema file: [Database Schema (SQL)](https://raw.githubusercontent.com/your-username/your-backend-repo/main/database/database-schema.sql)
+   - If using an ORM like TypeORM or Prisma, run migrations instead:
      ```bash
      npm run migration:run
      ```
-     *Note*: Adjust the migration command based on your ORM setup (e.g., `npm run typeorm:migration:run` for TypeORM). If migrations are not set up, enable schema synchronization in your ORM configuration (not recommended for production).
-  
-   - ![Download Database Schema(SQL)](https://raw.githubusercontent.com/XstremiscX/TechnovaBackend/main/database-schema.sql)
- 
+     *Note*: The project currently uses a direct SQL schema (`database-schema.sql`). If an ORM is implemented, adjust the migration command (e.g., `npm run typeorm:migration:run` for TypeORM). Schema synchronization is not recommended for production.
+
 5. **Run the Application**:
    - **Development Mode** (with hot-reload):
      ```bash
@@ -120,32 +123,16 @@ Follow these steps to set up and run the project locally:
 
 ## 📚 API Endpoints
 
-Use a tool like Postman to test the API. Protected endpoints require a JWT in the `Authorization: Bearer <token>` header.
+Use a tool like Postman to test the API. Protected endpoints require a JWT in the `Authorization: <token>` header.
 
-- **Authentication**:
-  - `POST /auth/register`: Register a seller or buyer (requires email verification).
-  - `POST /auth/login`: Login and receive a JWT.
-- **Users**:
-  - `PATCH /users/:id`: Update user (self-only).
-  - `DELETE /users/:id`: Delete user (self-only).
-- **Products (Sellers)**:
-  - `POST /products`: Create a product.
-  - `GET /products`: List all visible products (or seller’s own products).
-  - `PATCH /products/:id`: Update a product.
-  - `PATCH /products/:id/block`: Block a product (hide from listings).
-  - `DELETE /products/:id`: Soft delete a product.
-- **Purchases (Buyers)**:
-  - `POST /purchases`: Purchase a product and generate an invoice.
-  - `GET /purchases/:id`: Retrieve an invoice.
-
-For full documentation, enable Swagger (if configured) at `http://localhost:3000/api`.
+For full documentation `http://XstremiscX.github.io/TechnovaBackend`.
 
 ## 📝 Notes
 
-- **Database**: Ensure your PostgreSQL database is running and accessible. The `pg` driver is used, but you may need to configure your ORM (e.g., TypeORM or Prisma) in `src/main.ts` or a dedicated module.
+- **Database**: Ensure your PostgreSQL database is running and accessible. The `pg` driver is used, and the `database-schema.sql` file provides the table structure. If using an ORM, configure it in `src/main.ts` or a dedicated module.
 - **Email**: For email verification, configure Nodemailer with a valid email service. Gmail requires an app password for security.
 - **Security**: The `.gitignore` file excludes sensitive files like `.env`, `node_modules`, and `dist`. Do not commit sensitive data.
-- **Dependencies**: All required packages are listed in `package.json`. Running `npm install` is sufficient to install everything.
+- **Dependencies**: All required packages are listed in `package.json`. Running `npm install` is sufficient to install everything for both development and production.
 
 ## 🛡️ License
 
@@ -153,4 +140,4 @@ For full documentation, enable Swagger (if configured) at `http://localhost:3000
 
 ## 📬 Contact
 
-Hire me on [Fiverr](https://www.fiverr.com/your-profile) for NestJS backend development, API creation, or database setup. Check my GitHub for more projects or email me at [your.email@example.com].
+Hire me on [Fiverr](https://www.fiverr.com/users/jose_gallego_ca) for NestJS backend development, API creation, or database setup. Check my GitHub for more projects or email me at [your.email@example.com].
