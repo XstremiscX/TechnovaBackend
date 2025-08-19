@@ -5,26 +5,34 @@ import * as sanitizeHtml from 'sanitize-html';
 @Injectable()
 export class XssAtackPreventionPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-
-    // Si el valor obtenido es un objeton, entonces recorrera las propiedades del objeto y sanitizara los datos de tipo string.
-    // Si el valor obtenido es un string, entonces lo sanitizara directamente.
-    if(typeof value === 'object') {
-      for (const valueKey in value) {
-        if (typeof valueKey === "string"){
-            value[valueKey] = sanitizeHtml(value[valueKey], {
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      for (const key in item) {
+        if (typeof item[key] === 'string') {
+          item[key] = sanitizeHtml(item[key], {
             allowedTags: [],
             allowedAttributes: {}
           });
         }
       }
-    }else if( typeof value === 'string') {
-      value = sanitizeHtml(value, {
-        allowedTags: [],
-        allowedAttributes: {}
-      });
     }
-
-    // Retorna el valor sanitizado
-    return value;
+  } else if (typeof value === 'object') {
+    for (const key in value) {
+      if (typeof value[key] === 'string') {
+        value[key] = sanitizeHtml(value[key], {
+          allowedTags: [],
+          allowedAttributes: {}
+        });
+      }
+    }
+  } else if (typeof value === 'string') {
+    value = sanitizeHtml(value, {
+      allowedTags: [],
+      allowedAttributes: {}
+    });
   }
+
+  return value;
+}
+
 }

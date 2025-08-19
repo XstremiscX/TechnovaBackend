@@ -29,7 +29,7 @@ export class SellerUsersService {
       const queryCheckEmail = "SELECT * FROM seller_users WHERE email = $1 LIMIT 1";
       const paramsCheckEmail = [email];
       const userExists =  await this.databaseService.query(queryCheckEmail, paramsCheckEmail);
-      if(userExists.length > 0){ // Lanza un error si el usuario ya existe
+      if(userExists.length > 0){
         return true; // Retorna true si el usuario ya existe
       }else{
         return false; // Retorna false si el usuario no existe
@@ -84,8 +84,11 @@ export class SellerUsersService {
       const userExists = await this.checkIfUserExists(email).then(result => {return result}); // Verifica si el usuario ya existe
       
       if(userExists) {
+        
         throw new Error(`User email ${email} already exists`); // Lanza un error si el usuario ya existe
+
       }else{
+
         const newId = uuidv4();
       
         const salt = bcrypt.genSaltSync(10); // Genera un salt para hashear la contraseña
@@ -131,9 +134,14 @@ export class SellerUsersService {
 
   // Método que se encarga de cambiar la contraseña de un usuario vendedor.
   changePassword(id:string, newPassword: JSON) {
-    const query = "UPDATE seller_users SET user_password = $1 WHERE seller_id = $2";
+    const query = "UPDAT seller_users SET user_password = $1 WHERE seller_id = $2";
+
     const new_password = newPassword['new_password']; // Extrae la nueva contraseña del objeto JSON
-    const params = [new_password, id];
+
+    const salt = bcrypt.genSaltSync(10); // Genera un salt para hashear la contraseña
+    const hashedPassword = bcrypt.hashSync(new_password, salt); // Hashea la contraseña del usuario
+    
+    const params = [hashedPassword, id];
 
     try{
       this.databaseService.query(query, params);

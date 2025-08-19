@@ -39,5 +39,12 @@ export class ProductsController {
     return this.productsService.listAll();
   }
 
+  @Get(":id")
+  getProductDetail(@Param("id") id: string){
+
+    return this.productsService.getProductDetail(id);
+
+  }
+
 
 }

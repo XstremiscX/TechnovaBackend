@@ -1,6 +1,7 @@
 import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateSellerUserDto {
+
     @IsString()
     @IsNotEmpty()
     @IsOptional()
