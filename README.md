@@ -25,7 +25,7 @@ Welcome to the backend of an e-commerce platform built with **NestJS** and **Pos
 - **Framework**: NestJS
 - **Languages**: TypeScript, JavaScript
 - **Database**: PostgreSQL (using `pg` driver)
-- **Authentication**: JWT (`@nestjs/jwt`, `passport-jwt`)
+- **Authentication**: JWT (`@nestjs/jwt`)
 - **Email**: Nodemailer for verification emails
 - **Validation**: class-validator, class-transformer
 - **Other**: dotenv for environment variables, uuid for unique IDs, cors for cross-origin requests
@@ -60,40 +60,24 @@ Follow these steps to set up and run the project locally:
    Create a `.env` file in the project root based on the `.env.example` (if provided) or use the following template:
    ```plaintext
    # Database configuration
-   DATABASE_URL=postgresql://user:password@localhost:5432/ecommerce_db?schema=public
+   DATABASE_URL="postgresql://user:password@localhost:5432/database"
 
    # JWT configuration
    JWT_SECRET=your_jwt_secret_key
 
    # Email configuration (e.g., Gmail)
-   EMAIL_HOST=smtp.gmail.com
-   EMAIL_PORT=587
-   EMAIL_USER=your_email@gmail.com
-   EMAIL_PASS=your_app_password
+   GOOGLE_APP_PASSWORD=your google app password
+   GOOGLE_APP_EMAIL=exampleemail@gmail.com
 
    # API port
    PORT=3000
    ```
-   - Replace `user`, `password`, and `ecommerce_db` with your PostgreSQL credentials.
+   - Replace `user`, `password`, and `database` with your PostgreSQL credentials.
    - Generate a secure `JWT_SECRET` (e.g., a random string).
-   - For `EMAIL_PASS`, use a Gmail app password (create one in your Google Account settings).
+   - For `GOOGLE_APP_PASSWORD`, use a Gmail app password (create one in your Google Account settings).
 
-4. **Configure PostgreSQL**:
-   - Ensure PostgreSQL is running.
-   - Create a database named `ecommerce_db`:
-     ```bash
-     psql -U your_postgres_user -c "CREATE DATABASE ecommerce_db;"
-     ```
-   - Run the database schema to create tables:
-     ```bash
-     psql -U your_postgres_user -d ecommerce_db -f database/database-schema.sql
-     ```
-     Download the schema file: [Database Schema (SQL)](https://raw.githubusercontent.com/your-username/your-backend-repo/main/database/database-schema.sql)
-   - If using an ORM like TypeORM or Prisma, run migrations instead:
-     ```bash
-     npm run migration:run
-     ```
-     *Note*: The project currently uses a direct SQL schema (`database-schema.sql`). If an ORM is implemented, adjust the migration command (e.g., `npm run typeorm:migration:run` for TypeORM). Schema synchronization is not recommended for production.
+4. **Set up the database schema**
+   -  Download or copy the database ![Schema](https://raw.githubusercontent.com/XstremiscX/TechnovaBackend/refs/heads/main/database-schema.sql) and run it   into your database
 
 5. **Run the Application**:
    - **Development Mode** (with hot-reload):
@@ -125,7 +109,7 @@ Follow these steps to set up and run the project locally:
 
 Use a tool like Postman to test the API. Protected endpoints require a JWT in the `Authorization: <token>` header.
 
-For full documentation `http://XstremiscX.github.io/TechnovaBackend`.
+For full documentation ![Swagger UI Documentation](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/XstremiscX/TechnovaBackend/refs/heads/main/user-management-api/docs/openapi.json).
 
 ## 📝 Notes
 
@@ -140,4 +124,4 @@ For full documentation `http://XstremiscX.github.io/TechnovaBackend`.
 
 ## 📬 Contact
 
-Hire me on [Fiverr](https://www.fiverr.com/users/jose_gallego_ca) for NestJS backend development, API creation, or database setup. Check my GitHub for more projects or email me at [your.email@example.com].
+Hire me on [Fiverr](https://www.fiverr.com/users/jose_gallego_ca) for NestJS backend development, API creation, or database setup. Check my GitHub for more projects or email me at [josecarva16@gmail.com].
