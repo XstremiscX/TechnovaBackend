@@ -721,8 +721,16 @@
           "email": "string",
           "user_image": "string",
           "cellphone_number": "string",
-          "registration_date": "Date",
           "user_type": "number"
+        },
+        "example":{
+          "seller_name":"the best seller",
+          "address":"country,state,city,postalcode,neighborhood,street",
+          "user_password":"strongpassword",
+          "email":"seller@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890",
+          "user_type":0
         }
       },
       "UpdateSellerUserDto": {
@@ -736,6 +744,14 @@
           "cellphone_number": "string",
           "registration_date": "Date",
           "user_type": "number"
+        },
+        "example":{
+          "company_name":"the best company",
+          "address":"country,state,city,postalcode,neighborhood,street",
+          "email":"seller@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890",
+          "user_type":1
         }
       },
       "LogInSellerDto": {
@@ -743,6 +759,10 @@
         "properties": {
           "email": "string",
           "password": "string"
+        },
+        "example":{
+          "email":"seller@example.com",
+          "password":"strongpassword"
         }
       },
       "CreateProductDto": {
@@ -756,6 +776,16 @@
           "description": "string",
           "product_image": "string",
           "product_status": "string"
+        },
+        "example":{
+          "brand_id":"brand123",
+          "category_id":"category123",
+          "product_name":"Smartphone",
+          "price":299.99,
+          "quantity":50,
+          "description":"Latest model with advanced features",
+          "product_image":"image.jpg",
+          "product_status":"available"
         }
       },
       "UpdateProductDto": {
@@ -770,6 +800,17 @@
           "product_image": "string",
           "product_status": "string",
           "product_id": "string"
+        },
+        "example":{
+          "product_id":"product123",
+          "brand_id":"brand123",
+          "category_id":"category123",
+          "product_name":"Smartphone",
+          "price":299.99,
+          "quantity":50,
+          "description":"Latest model with advanced features",
+          "product_image":"image.jpg",
+          "product_status":"unavailable"
         }
       },
       "CreateBuyerUserDto": {
@@ -781,6 +822,14 @@
           "email": "string",
           "user_image": "string",
           "cellphone_number": "string"
+        },
+        "example":{
+          "user_name":"John",
+          "user_lastname":"Doe",
+          "user_password":"strongpassword",
+          "email":"buyer@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890"
         }
       },
       "LoginDataDto": {
@@ -788,6 +837,10 @@
         "properties": {
           "email": "string",
           "password": "string"
+        },
+        "example":{
+          "email":"buyer@example.com",
+          "password":"strongpassword"
         }
       },
       "UpdateBuyerUserDto": {
@@ -798,12 +851,22 @@
           "email": "string",
           "user_image": "string",
           "cellphone_number": "string"
+        },
+        "example":{
+          "user_name":"John",
+          "user_lastname":"Doe",
+          "email":"buyer@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890"
         }
       },
-      "CreatAddressDto": {
+      "CreateAddressDto": {
         "type": "object",
         "properties": {
           "address": "string"
+        },
+        "example":{
+          "address":"123 Main St, Anytown, USA"
         }
       },
       "UpdateAddressDto": {
@@ -811,6 +874,10 @@
         "properties": {
           "address_id": "string",
           "address": "string"
+        },
+        "example":{
+          "address_id":"address123",
+          "address":"123 Main St, Anytown, USA"
         }
       },
       "CreateCardDto": {
@@ -819,6 +886,11 @@
           "card_number": "string",
           "expiration_date": "string",
           "card_holder": "string"
+        },
+        "example":{
+          "card_number":"4111111111111111",
+          "expiration_date":"12/25",
+          "card_holder":"John Doe"
         }
       },
       "UpdateCardDto": {
@@ -828,6 +900,12 @@
           "card_number": "string",
           "expiration_date": "string",
           "card_holder": "string"
+        },
+        "example":{
+          "card_id":"card123",
+          "card_number":"4111111111111111",
+          "expiration_date":"12/25",
+          "card_holder":"John Does"
         }
       },
       "CreateSaleDto": {
@@ -835,6 +913,10 @@
         "properties": {
           "buyer_id": "string",
           "amount": "number"
+        },
+        "example":{
+          "buyer_id":"buyer123",
+          "amount":99.99
         }
       },
       "CreateSalesDetailDto":{
@@ -843,6 +925,11 @@
           "product_id": "string",
           "unite_price": "number",
           "quantity": "number"
+        },
+        "example":{
+          "product_id":"product123",
+          "unite_price":299.99,
+          "quantity":1
         }
       }
     }

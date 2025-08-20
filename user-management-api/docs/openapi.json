@@ -4,13 +4,53 @@
     "/categories": {
       "get": {
         "operationId": "CategoriesController_findAll",
+        "security":[],
         "parameters": [],
         "responses": {
           "200": {
-            "description": "If the categories are found, this endpoint will return an array with all the categories found."
+            "description": "If the categories are found, this endpoint will return an array with all the categories found.",
+            "content" : {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref":"#/components/schemas/Categories"
+                  }
+                },
+                  "example":[
+                    {
+                      "category_id": "category123",
+                      "category_name": "PC",
+                      "category_description": "description"
+                    },
+                    {
+                      "category_id": "category123",
+                      "category_name": "Screen",
+                      "category_description": "description"
+                    }
+                  ]
+              }
+            }
           },
           "404": {
-            "description": "If no category is found in the database, an HttpException will be returned with a status of 404 Not Found."
+            "description": "If no category is found in the database, an HttpException will be returned with a status of 404 Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No categories found"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -21,6 +61,7 @@
     "/seller-users": {
       "post": {
         "operationId": "SellerUsersController_create",
+        "security":[],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -48,6 +89,7 @@
     "/seller-users/change-password/{id}": {
       "post": {
         "operationId": "SellerUsersController_changePassword",
+        "security":[{"authToken":[]}],
         "parameters": [
           {
             "name": "id",
@@ -71,6 +113,7 @@
     "/seller-users/verify/{id}": {
       "get": {
         "operationId": "SellerUsersController_verifyUser",
+        "security":[],
         "parameters": [
           {
             "name": "id",
@@ -83,7 +126,7 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "If the user verification is successful, a message saying “User successfully verified” will be returned."
           }
         },
         "tags": [
@@ -700,149 +743,255 @@
     "version": "1.0",
     "contact": {}
   },
-  "tags": [],
-  "servers": [],
+  "tags": ["Categories","Brands","BuyerUsers","Sales","Products","SellerUsers"],
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development server"
+    }
+  ],
   "components": {
     "securitySchemes": {
-      "bearer": {
-        "scheme": "bearer",
+      "authToken": {
+        "scheme": "jwt",
         "bearerFormat": "JWT",
-        "type": "http"
+        "type": "http",
+        "description": "JWT token sent in the Authorization header without the 'Bearer' prefix (e.g., Authorization: <token>)"
       }
     },
     "schemas": {
       "CreateSellerUserDto": {
         "type": "object",
         "properties": {
-          "seller_name": "string",
-          "company_name": "string",
-          "address": "string",
-          "user_password": "string",
-          "email": "string",
-          "user_image": "string",
-          "cellphone_number": "string",
-          "registration_date": "Date",
-          "user_type": "number"
+          "seller_name": {"type": "string"},
+          "company_name": {"type": "string"},
+          "address": {"type": "string"},
+          "user_password": {"type": "string"},
+          "email": {"type": "string"},
+          "user_image": {"type": "string"},
+          "cellphone_number": {"type": "string"},
+          "user_type": {"type": "number"}
+        },
+        "example":{
+          "seller_name":"the best seller",
+          "address":"country,state,city,postalcode,neighborhood,street",
+          "user_password":"strongpassword",
+          "email":"seller@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890",
+          "user_type":0
         }
       },
       "UpdateSellerUserDto": {
         "type": "object",
         "properties": {
-          "seller_name": "string",
-          "company_name": "string",
-          "address": "string",
-          "email": "string",
-          "user_image": "string",
-          "cellphone_number": "string",
-          "registration_date": "Date",
-          "user_type": "number"
+          "seller_name": {"type": "string"},
+          "company_name": {"type": "string"},
+          "address": {"type": "string"},
+          "email": {"type": "string"},
+          "user_image": {"type": "string"},
+          "cellphone_number": {"type": "string"},
+          "registration_date": {"type": "string", "format": "date"},
+          "user_type": {"type": "number"}
+        },
+        "example":{
+          "company_name":"the best company",
+          "address":"country,state,city,postalcode,neighborhood,street",
+          "email":"seller@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890",
+          "user_type":1
         }
       },
       "LogInSellerDto": {
         "type": "object",
         "properties": {
-          "email": "string",
-          "password": "string"
+          "email": {"type": "string"},
+          "password": {"type": "string"}
+        },
+        "example":{
+          "email":"seller@example.com",
+          "password":"strongpassword"
         }
       },
       "CreateProductDto": {
         "type": "object",
         "properties": {
-          "brand_id": "string",
-          "category_id": "string",
-          "product_name": "string",
-          "price": "number",
-          "quantity": "number",
-          "description": "string",
-          "product_image": "string",
-          "product_status": "string"
+          "brand_id": {"type": "string"},
+          "category_id": {"type": "string"},
+          "product_name": {"type": "string"},
+          "price": {"type": "number"},
+          "quantity": {"type": "number"},
+          "description": {"type": "string"},
+          "product_image": {"type": "string"},
+          "product_status": {"type": "string"}
+        },
+        "example":{
+          "brand_id":"brand123",
+          "category_id":"category123",
+          "product_name":"Smartphone",
+          "price":299.99,
+          "quantity":50,
+          "description":"Latest model with advanced features",
+          "product_image":"image.jpg",
+          "product_status":"available"
         }
       },
       "UpdateProductDto": {
         "type": "object",
         "properties": {
-          "brand_id": "string",
-          "category_id": "string",
-          "product_name": "string",
-          "price": "number",
-          "quantity": "number",
-          "description": "string",
-          "product_image": "string",
-          "product_status": "string",
-          "product_id": "string"
+          "brand_id": {"type": "string"},
+          "category_id": {"type": "string"},
+          "product_name": {"type": "string"},
+          "price": {"type": "number"},
+          "quantity": {"type": "number"},
+          "description": {"type": "string"},
+          "product_image": {"type": "string"},
+          "product_status": {"type": "string"},
+          "product_id": {"type": "string"}
+        },
+        "example":{
+          "product_id":"product123",
+          "brand_id":"brand123",
+          "category_id":"category123",
+          "product_name":"Smartphone",
+          "price":299.99,
+          "quantity":50,
+          "description":"Latest model with advanced features",
+          "product_image":"image.jpg",
+          "product_status":"unavailable"
         }
       },
       "CreateBuyerUserDto": {
         "type": "object",
         "properties": {
-          "user_name": "string",
-          "user_lastname": "string",
-          "user_password": "string",
-          "email": "string",
-          "user_image": "string",
-          "cellphone_number": "string"
+          "user_name": {"type": "string"},
+          "user_lastname": {"type": "string"},
+          "user_password": {"type": "string"},
+          "email": {"type": "string"},
+          "user_image": {"type": "string"},
+          "cellphone_number": {"type": "string"}
+        },
+        "example":{
+          "user_name":"John",
+          "user_lastname":"Doe",
+          "user_password":"strongpassword",
+          "email":"buyer@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890"
         }
       },
       "LoginDataDto": {
         "type": "object",
         "properties": {
-          "email": "string",
-          "password": "string"
+          "email": {"type": "string"},
+          "password": {"type": "string"}
+        },
+        "example":{
+          "email":"buyer@example.com",
+          "password":"strongpassword"
         }
       },
       "UpdateBuyerUserDto": {
         "type": "object",
         "properties": {
-          "user_name": "string",
-          "user_lastname": "string",
-          "email": "string",
-          "user_image": "string",
-          "cellphone_number": "string"
+          "user_name": {"type": "string"},
+          "user_lastname": {"type": "string"},
+          "email": {"type": "string"},
+          "user_image": {"type": "string"},
+          "cellphone_number": {"type": "string"}
+        },
+        "example":{
+          "user_name":"John",
+          "user_lastname":"Doe",
+          "email":"buyer@example.com",
+          "user_image":"image_url",
+          "cellphone_number":"1234567890"
         }
       },
-      "CreatAddressDto": {
+      "CreateAddressDto": {
         "type": "object",
         "properties": {
-          "address": "string"
+          "address": {"type": "string"}
+        },
+        "example":{
+          "address":"123 Main St, Anytown, USA"
         }
       },
       "UpdateAddressDto": {
         "type": "object",
         "properties": {
-          "address_id": "string",
-          "address": "string"
+          "address_id": {"type": "string"},
+          "address": {"type": "string"}
+        },
+        "example":{
+          "address_id":"address123",
+          "address":"123 Main St, Anytown, USA"
         }
       },
       "CreateCardDto": {
         "type": "object",
         "properties": {
-          "card_number": "string",
-          "expiration_date": "string",
-          "card_holder": "string"
+          "card_number": {"type": "string"},
+          "expiration_date": {"type": "string"},
+          "card_holder": {"type": "string"}
+        },
+        "example":{
+          "card_number":"4111111111111111",
+          "expiration_date":"12/25",
+          "card_holder":"John Doe"
         }
       },
       "UpdateCardDto": {
         "type": "object",
         "properties": {
-          "card_id": "string",
-          "card_number": "string",
-          "expiration_date": "string",
-          "card_holder": "string"
+          "card_id": {"type": "string"},
+          "card_number": {"type": "string"},
+          "expiration_date": {"type": "string"},
+          "card_holder": {"type": "string"}
+        },
+        "example":{
+          "card_id":"card123",
+          "card_number":"4111111111111111",
+          "expiration_date":"12/25",
+          "card_holder":"John Does"
         }
       },
       "CreateSaleDto": {
         "type": "object",
         "properties": {
-          "buyer_id": "string",
-          "amount": "number"
+          "buyer_id": {"type": "string"},
+          "amount": {"type": "number"}
+        },
+        "example":{
+          "buyer_id":"buyer123",
+          "amount":99.99
         }
       },
       "CreateSalesDetailDto":{
         "type":"object",
         "properties":{
-          "product_id": "string",
-          "unite_price": "number",
-          "quantity": "number"
+          "product_id": {"type": "string"},
+          "unite_price": {"type": "number"},
+          "quantity": {"type": "number"}
+        },
+        "example":{
+          "product_id":"product123",
+          "unite_price":299.99,
+          "quantity":1
+        }
+      },
+      "Categories":{
+        "type": "object",
+        "properties": {
+          "category_id": {"type": "string"},
+          "category_name": {"type": "string"},
+          "category_description": {"type": "string"}
+        },
+        "example":{
+          "category_id": "category123",
+          "category_name": "PC",
+          "category_description": "description"
         }
       }
     }
