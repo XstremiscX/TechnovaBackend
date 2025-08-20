@@ -146,7 +146,7 @@
                   "properties": {
                     "statusCode": {
                       "type": "integer",
-                      "example": 501
+                      "example": 500
                     },
                     "message": {
                       "type": "string",
@@ -198,7 +198,7 @@
                   "properties": {
                     "statusCode": {
                       "type": "integer",
-                      "example": 501
+                      "example": 500
                     },
                     "message": {
                       "type": "string",
@@ -249,7 +249,7 @@
                   "properties": {
                     "statusCode": {
                       "type": "integer",
-                      "example": 501
+                      "example": 500
                     },
                     "message": {
                       "type": "string",
@@ -309,7 +309,7 @@
                   "properties": {
                     "statusCode": {
                       "type": "integer",
-                      "example": 501
+                      "example": 500
                     },
                     "message": {
                       "type": "string",
@@ -359,7 +359,7 @@
                   "properties": {
                     "statusCode": {
                       "type": "integer",
-                      "example": 501
+                      "example": 500
                     },
                     "message": {
                       "type": "string",
@@ -452,10 +452,73 @@
     "/brands": {
       "get": {
         "operationId": "BrandsController_findAll",
+        "security": [],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of all brands.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Brand"
+                  },
+                  "example":[
+                    {
+                      "brand_id": "brand123",
+                      "name": "BrandName",
+                      "description": "BrandDescription"
+                    },
+                    {
+                      "brand_id": "brand456",
+                      "name": "AnotherBrand",
+                      "description": "AnotherBrandDescription"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404":{
+            "description": "If no brands are found, an error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No brands found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -466,6 +529,7 @@
     "/products": {
       "post": {
         "operationId": "ProductsController_create",
+        "security": [{"authToken":[]}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -479,7 +543,34 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Return the created product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -488,10 +579,79 @@
       },
       "get": {
         "operationId": "ProductsController_listAll",
+        "security": [],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Return a list of all products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductListItem"
+                  }
+                },
+                "example":[
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                    "product_name": "product 1",
+                    "price": "31.2",
+                    "product_image": "productImage.png",
+                    "brand_name": "Acer",
+                    "category_name": "Screen"
+                  },
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9f",
+                    "product_name": "product 2",
+                    "price": "45.0",
+                    "product_image": "productImage2.png",
+                    "brand_name": "Dell",
+                    "category_name": "Screen"
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "If no products are found, an error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Products not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -502,10 +662,67 @@
     "/products/my-products": {
       "post": {
         "operationId": "ProductsController_listSellerProducts",
+        "security":[{"authToken":[]}],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of the seller's own products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductSellerListItem"
+                  }
+                },
+                "example":[
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                    "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                    "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                    "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                    "product_name": "product 1",
+                    "price": "31.2",
+                    "quantity": 12,
+                    "description": "description",
+                    "product_image": "productImage.png",
+                    "product_status": true
+                  },
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9f",
+                    "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                    "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                    "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                    "product_name": "product 2",
+                    "price": "45.0",
+                    "quantity": 8,
+                    "description": "description",
+                    "product_image": "productImage2.png",
+                    "product_status": true
+                  }
+                ]
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An error has occurred during the data extraction."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -516,6 +733,7 @@
     "/products/update-product": {
       "post": {
         "operationId": "ProductsController_updateProduct",
+        "security":[{"authToken":[]}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -529,7 +747,46 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Updates and returns an object with the new product data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductUpdated"
+                },
+                "example":{
+                  "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                  "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                  "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                  "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                  "product_name": "product 1",
+                  "price": "31.2",
+                  "quantity": 12,
+                  "description": "description",
+                  "product_image": "productImage.png",
+                  "product_status": true
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Return an error message when an internal server error occurs or the product is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An error has occurred during the product update."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -540,6 +797,7 @@
     "/products/{id}": {
       "get": {
         "operationId": "ProductsController_getProductDetail",
+        "security": [],
         "parameters": [
           {
             "name": "id",
@@ -552,7 +810,85 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns an object with the product data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties":{
+                    "product_id": {"type":"string"},
+                    "seller_id": {"type":"string"},
+                    "category_id": {"type":"string"},
+                    "brand_id": {"type":"string"},
+                    "product_name": {"type":"string"},
+                    "price": {"type":"string"},
+                    "quantity": {"type":"integer"},
+                    "description": {"type":"string"},
+                    "product_image": {"type":"string"},
+                    "product_status": {"type":"boolean"},
+                    "brand_name": {"type":"string"},
+                    "category_name": {"type":"string"},
+                    "seller_name": {"type":"string"}
+                  }
+
+                },
+                "example":{
+                  "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                  "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                  "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                  "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                  "product_name": "product 1",
+                  "price": "31.2",
+                  "quantity": 12,
+                  "description": "description",
+                  "product_image": "productImage.png",
+                  "product_status": true,
+                  "brand_name": "brand 1",
+                  "category_name": "category 1",
+                  "seller_name": "seller 1"
+                }
+              }
+            }
+          },
+          "404":{
+            "description": "Product not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"If an error occurs during the operation, an HTTP 500 error will be sent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An error has occurred getting the product details"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -563,6 +899,7 @@
     "/buyer-users": {
       "post": {
         "operationId": "BuyerUsersController_create",
+        "security": [],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -576,7 +913,35 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "The user is successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User created successfully"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"If an error occurs during user creation, an error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error creating user"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -585,6 +950,7 @@
       },
       "patch": {
         "operationId": "BuyerUsersController_updateUser",
+        "security":[{"authToken":[]}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -598,7 +964,68 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns an object with the updated user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties":{
+                    "user_name": {"type":"string"},
+                    "user_lastname": {"type":"string"},
+                    "email": {"type":"string"},
+                    "cellphone_number": {"type":"string"},
+                    "user_image": {"type":"string"}
+                  }
+                },
+                "example":{
+                  "user_name": "newName",
+                  "user_lastname": "newLastname",
+                  "email": "example@gmail.com",
+                  "cellphone_number": "0000000000",
+                  "user_image": "basic_user_image.png"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "When the token is invalid or expired, an error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"If an error occurs during the update, an error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error updating user: error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -607,10 +1034,47 @@
       },
       "delete": {
         "operationId": "BuyerUsersController_deleteAccount",
+        "security":[{"authToken":[]}],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "The buyer user account is successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during account deletion, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error deleting user: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -621,6 +1085,7 @@
     "/buyer-users/login": {
       "post": {
         "operationId": "BuyerUsersController_login",
+        "security": [],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -634,7 +1099,62 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a JWT token for the authenticated buyer user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": { "type": "string" }
+                  },
+                  "example": {
+                    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "If the email, password, or user verification status is invalid, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "User not verified" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "If the user is not found, a not found error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 404 },
+                    "message": { "type": "string", "example": "User not found" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an internal server error occurs during login, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Login error: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -645,10 +1165,72 @@
     "/buyer-users/info": {
       "post": {
         "operationId": "BuyerUsersController_getUserData",
+        "security": [{"authToken":[]}],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns the authenticated buyer's user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BuyerUser"
+                  }
+                },
+                "example": [
+                  {
+                    "user_name": "John",
+                    "user_lastname": "Doe",
+                    "email": "buyer@example.com",
+                    "cellphone_number": "1234567890",
+                    "user_image": "basic_user_image.png"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "If the user is not found, a not found error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 404 },
+                    "message": { "type": "string", "example": "User not found" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an internal server error occurs, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error getting user data: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -659,10 +1241,57 @@
     "/buyer-users/change-password": {
       "post": {
         "operationId": "BuyerUsersController_changePassword",
+        "security": [{"authToken":[]}],
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": ""
+            "description": "The password is successfully changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Password change successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during password change, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error changing password: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -673,6 +1302,7 @@
     "/buyer-users/verify/{id}": {
       "get": {
         "operationId": "BuyerUsersController_verifyUser",
+        "security": [],
         "parameters": [
           {
             "name": "id",
@@ -685,7 +1315,29 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "The buyer user is successfully verified.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User verified successfully"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during user verification, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error verifying user: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -696,6 +1348,7 @@
     "/buyer-users/address": {
       "post": {
         "operationId": "BuyerUsersController_createAddress",
+        "security": [{"authToken":[]}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -708,8 +1361,52 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "201": {
+            "description": "The address is successfully created for the authenticated buyer user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Address"
+                  }
+                },
+                "example": [
+                  {
+                    "address_id": "address123",
+                    "address": "123 Main St, Anytown, USA"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during address creation, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Creating address error: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -718,10 +1415,67 @@
       },
       "get": {
         "operationId": "BuyerUsersController_findAddress",
+        "security": [{"authToken": []}],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of addresses associated with the authenticated buyer user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Address"
+                      }
+                    },
+                    {
+                      "type": "string",
+                      "example": "No hay direcciones agregadas."
+                    }
+                  ]
+                },
+                "example": [
+                  {
+                    "address_id": "address123",
+                    "address": "123 Main St, Anytown, USA"
+                  },
+                  {
+                    "address_id": "address456",
+                    "address": "456 Elm St, Anytown, USA"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during address retrieval, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Searching address error: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -732,6 +1486,7 @@
     "/buyer-users/address/update": {
       "post": {
         "operationId": "BuyerUsersController_updateAddress",
+        "security": [{"authToken": []}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -745,7 +1500,51 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "The address is successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Address"
+                  }
+                },
+                "example": [
+                  {
+                    "address_id": "address123",
+                    "address": "123 Main St, Anytown, USA"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during address update, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error updating process: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -756,6 +1555,7 @@
     "/buyer-users/address/{id}": {
       "delete": {
         "operationId": "BuyerUsersController_deleteAddress",
+        "security": [{"authToken": []}],
         "parameters": [
           {
             "name": "id",
@@ -768,7 +1568,43 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "The address is successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Address deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during address deletion, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error deleting process: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -779,6 +1615,7 @@
     "/buyer-users/cards": {
       "post": {
         "operationId": "BuyerUsersController_addCart",
+        "security": [{"authToken": []}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -791,8 +1628,54 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "201": {
+            "description": "The card is successfully created for the authenticated buyer user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                },
+                "example": [
+                  {
+                    "card_id": "card123",
+                    "card_number": "4111111111111111",
+                    "expiration_date": "12/25",
+                    "card_holder": "John Doe"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during card creation, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Creating card process error: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -801,10 +1684,71 @@
       },
       "get": {
         "operationId": "BuyerUsersController_findCards",
+        "security": [{"authToken": []}],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of cards associated with the authenticated buyer user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Card"
+                      }
+                    },
+                    {
+                      "type": "string",
+                      "example": "No hay tarjetas agregadas."
+                    }
+                  ]
+                },
+                "example": [
+                  {
+                    "card_id": "card123",
+                    "card_number": "4111111111111111",
+                    "expiration_date": "12/25",
+                    "card_holder": "John Doe"
+                  },
+                  {
+                    "card_id": "card456",
+                    "card_number": "5555555555554444",
+                    "expiration_date": "11/26",
+                    "card_holder": "John Doe"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during card retrieval, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Searching cards error: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -815,6 +1759,7 @@
     "/buyer-users/cards/update": {
       "post": {
         "operationId": "BuyerUsersController_updateCard",
+        "security": [{"authToken": []}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -828,7 +1773,52 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "The card is successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                },
+                "example": [
+                  {
+                    "card_holder": "John Doe",
+                    "card_number": "4111111111111111",
+                    "expiration_date": "12/25"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during card update, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error updating process: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -839,6 +1829,7 @@
     "/buyer-users/cards/{id}": {
       "delete": {
         "operationId": "BuyerUsersController_deleteCard",
+        "security": [{"authToken": []}],
         "parameters": [
           {
             "name": "id",
@@ -851,7 +1842,43 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "The card is successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Address deleted successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an error occurs during card deletion, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error deleting process: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -862,6 +1889,7 @@
     "/sales": {
       "post": {
         "operationId": "SalesController_createSale",
+        "security": [],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -874,8 +1902,44 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "201": {
+            "description": "The sale is successfully created and returns the generated sale ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "sale123"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the input data is invalid, a bad request error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 400 },
+                    "message": { "type": "string", "example": "Invalid input data" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an internal server error occurs during sale creation, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error creating sale: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -884,10 +1948,63 @@
       },
       "get": {
         "operationId": "SalesController_findAllSales",
+        "security": [{"authToken": []}],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of all sales associated with the authenticated buyer user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sale"
+                  }
+                },
+                "example": [
+                  {
+                    "sale_id": "sale123",
+                    "buyer_id": "buyer123",
+                    "amount": 99.99,
+                    "sale_date": "2025-08-20T17:41:00.000Z"
+                  },
+                  {
+                    "sale_id": "sale456",
+                    "buyer_id": "buyer123",
+                    "amount": 149.99,
+                    "sale_date": "2025-08-19T10:30:00.000Z"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "When the token is invalid or expired, an unauthorized error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 401 },
+                    "message": { "type": "string", "example": "Invalid token" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an internal server error occurs during sale retrieval, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error fetching sales: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -898,6 +2015,7 @@
     "/sales/sales-detail/{sale_id}": {
       "post": {
         "operationId": "SalesController_createSaleDetail",
+        "security": [],
         "parameters": [
           {
             "name": "sale_id",
@@ -915,15 +2033,51 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/CreateSalesDetailDto"
                 }
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "201": {
+            "description": "The sale details are successfully created for the specified sale.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Sale created successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the input data is invalid, a bad request error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 400 },
+                    "message": { "type": "string", "example": "Invalid input data" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an internal server error occurs during sale detail creation, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error creating sale detail: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -932,6 +2086,7 @@
       },
       "get": {
         "operationId": "SalesController_findSaleDetails",
+        "security": [],
         "parameters": [
           {
             "name": "sale_id",
@@ -944,7 +2099,60 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of sale details for the specified sale, including product and seller information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaleDetail"
+                  }
+                },
+                "example": [
+                  {
+                    "sale_id": "sale123",
+                    "amount": 99.99,
+                    "sale_date": "2025-08-20T17:41:00.000Z",
+                    "detail_id": "detail123",
+                    "unite_price": 49.99,
+                    "quantity": 2,
+                    "product_name": "Smartphone",
+                    "price": "49.99",
+                    "seller_id": "seller123",
+                    "seller_name": "Seller Test",
+                    "company_name": "Test Company"
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "If no sale details are found for the specified sale ID, a not found error is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 404 },
+                    "message": { "type": "string", "example": "No sale details found" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If an internal server error occurs during sale detail retrieval, an error message is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "integer", "example": 500 },
+                    "message": { "type": "string", "example": "Error fetching sale details: Internal server error" }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -1253,6 +2461,189 @@
           "user_image": "/basic_user_image.png",
           "cellphone_number": "0000000000",
           "user_type": 0
+        }
+      },
+      "Brand":{
+        "type": "object",
+        "properties": {
+          "brand_id": {"type": "string"},
+          "brand_name": {"type": "string"},
+          "description": {"type": "string"}
+        },
+        "example":{
+          "brand_id": "brand123",
+          "brand_name": "BrandName",
+          "description": "BrandDescription"
+        }
+      },
+      "Product":{
+        "type":"object",
+        "properties":{
+          "message": {"type":"string"},
+          "product_object": {
+              "product_id": {"type":"string"},
+              "seller_id": {"type":"string"},
+              "category_id": {"type":"string"},
+              "brand_id": {"type":"string"},
+              "product_name": {"type":"string"},
+              "price": {"type":"string"},
+              "quantity": {"type":"integer"},
+              "description": {"type":"string"},
+              "product_image": {"type":"string"},
+              "product_status": {"type":"boolean"}
+          }
+        },
+        "example":{
+          "message": "Product created successfully.",
+          "product_object": {
+            "product_id": "ccef3f06-730c-4311-8dbf-364f7b6afbc9",
+            "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+            "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+            "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+            "product_name": "MSI Dragon Design hz144 full hd",
+            "price": "9000000",
+            "quantity": 18,
+            "description": "description",
+            "product_image": "productImage.png",
+            "product_status": true
+          }
+        }
+      },
+      "ProductListItem": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "product_id": {"type": "string"},
+            "product_name": {"type": "string"},
+            "price": {"type": "string"},
+            "product_image": {"type": "string"},
+            "brand_name": {"type": "string"},
+            "category_name": {"type": "string"}
+          }
+        },
+        "example": {
+          "product": {
+            "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+            "product_name": "product 1",
+            "price": "31.2",
+            "product_image": "productImage.png",
+            "brand_name": "Acer",
+            "category_name": "Screen"
+          }
+        }
+      },
+      "ProductSellerListItem":{
+        "type": "object",
+        "properties": {
+          "product": {
+            "product_id": {"type": "string"},
+            "seller_id": {"type": "string"},
+            "category_id": {"type": "string"},
+            "brand_id": {"type": "string"},
+            "product_name": {"type": "string"},
+            "price": {"type": "string"},
+            "quantity": {"type": "integer"},
+            "description": {"type": "string"},
+            "product_image": {"type": "string"},
+            "product_status": {"type": "boolean"}
+          }
+        },
+        "example": {
+          "product": {
+            "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+            "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+            "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+            "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+            "product_name": "product 1",
+            "price": "31.2",
+            "quantity": 12,
+            "description": "description",
+            "product_image": "productImage.png",
+            "product_status": true
+          }
+        }
+      },
+      "ProductUpdated":{
+        "type":"object",
+        "properties":{
+          "product_id": {"type":"string"},
+          "seller_id": {"type":"string"},
+          "category_id": {"type":"string"},
+          "brand_id": {"type":"string"},
+          "product_name": {"type":"string"},
+          "price": {"type":"string"},
+          "quantity": {"type":"integer"},
+          "description": {"type":"string"},
+          "product_image": {"type":"string"},
+          "product_status": {"type":"boolean"}
+        },
+        "example":{
+          "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+          "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+          "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+          "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+          "product_name": "product 1",
+          "price": "31.2",
+          "quantity": 12,
+          "description": "description",
+          "product_image": "productImage.png",
+          "product_status": true
+        }
+      },
+      "BuyerUser": {
+        "type": "object",
+        "properties": {
+          "user_name": { "type": "string" },
+          "user_lastname": { "type": "string" },
+          "email": { "type": "string" },
+          "cellphone_number": { "type": "string" },
+          "user_image": { "type": "string" }
+        },
+        "required": ["user_name", "user_lastname", "email", "cellphone_number"],
+        "example": {
+          "user_name": "John",
+          "user_lastname": "Doe",
+          "email": "buyer@example.com",
+          "cellphone_number": "1234567890",
+          "user_image": "basic_user_image.png"
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "address_id": { "type": "string" },
+          "address": { "type": "string" }
+        },
+        "required": ["address_id", "address"],
+        "example": {
+          "address_id": "address123",
+          "address": "123 Main St, Anytown, USA"
+        }
+      },
+      "Card": {
+        "type": "object",
+        "properties": {
+          "card_id": { "type": "string" },
+          "card_number": { "type": "string" },
+          "expiration_date": { "type": "string" },
+          "card_holder": { "type": "string" }
+        },
+        "required": ["card_id", "card_number", "expiration_date", "card_holder"],
+        "example": {
+          "card_id": "card123",
+          "card_number": "4111111111111111",
+          "expiration_date": "12/25",
+          "card_holder": "John Doe"
+        }
+      },
+      "ChangePasswordDto": {
+        "type": "object",
+        "properties": {
+          "new_password": { "type": "string" }
+        },
+        "required": ["new_password"],
+        "example": {
+          "new_password": "newStrongPassword123"
         }
       }
     }
