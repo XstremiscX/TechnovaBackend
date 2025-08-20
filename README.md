@@ -109,7 +109,7 @@ Follow these steps to set up and run the project locally:
 
 Use a tool like Postman to test the API. Protected endpoints require a JWT in the `Authorization: <token>` header.
 
-For full documentation ![Swagger UI Documentation](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/XstremiscX/TechnovaBackend/refs/heads/main/user-management-api/docs/openapi.json).
+For full documentation [Swagger UI Documentation](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/XstremiscX/TechnovaBackend/refs/heads/main/user-management-api/docs/openapi.json).
 
 ## 📝 Notes
 
