@@ -178,7 +178,7 @@ export class ProductsService {
       //Acualizamos el producto y recibimos un objeto con todos los datos actualizados.
       const res = await this.databaseService.query(query,params);
 
-      if(res == undefined){
+      if(res == undefined || res.length === 0){
 
         throw new HttpException("An error has occurred during the product update",HttpStatus.INTERNAL_SERVER_ERROR);
 
