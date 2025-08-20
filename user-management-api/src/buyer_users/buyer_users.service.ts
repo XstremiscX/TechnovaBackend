@@ -56,7 +56,7 @@ export class BuyerUsersService {
       const transporter = nodemailer.createTransport({
         service:"gmail",
         auth: {
-          user: "safirjoseproyecto@gmail.com",
+          user: process.env.GOOGLE_APP_EMAIL,
           pass: process.env.GOOGLE_APP_PASSWORD
         },
         tls:{
