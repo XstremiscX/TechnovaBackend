@@ -7,10 +7,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "If the categories are found, this endpoint will return an array with all the categories found."
-          },
-          "404": {
-            "description": "If no category is found in the database, an HttpException will be returned with a status of 404 Not Found."
+            "description": ""
           }
         },
         "tags": [
@@ -34,10 +31,7 @@
         },
         "responses": {
           "201": {
-            "description": "If the user is created successfully, a message saying “User created successfully” will be sent."
-          },
-          "409": {
-            "description": "If an error occurs during user creation, an HttpException with status 409 and the error message will be sent."
+            "description": ""
           }
         },
         "tags": [
@@ -60,7 +54,7 @@
         ],
         "responses": {
           "201": {
-            "description": "If the password is changed without any problems, a message will be sent saying “User password successfully changed.”"
+            "description": ""
           }
         },
         "tags": [
@@ -835,14 +829,6 @@
         "properties": {
           "buyer_id": "string",
           "amount": "number"
-        }
-      },
-      "CreateSalesDetailDto":{
-        "type":"object",
-        "properties":{
-          "product_id": "string",
-          "unite_price": "number",
-          "quantity": "number"
         }
       }
     }

@@ -45,7 +45,7 @@ export class SellerUsersService {
       const transporter = nodemailer.createTransport({
         service:"gmail",
         auth: {
-          user: "safirjoseproyecto@gmail.com",
+          user: process.env.GOOGLE_APP_EMAIL, // Email del remitente
           pass: process.env.GOOGLE_APP_PASSWORD
         },
         tls:{
@@ -57,8 +57,12 @@ export class SellerUsersService {
         from: '"proyecto Safir Jose"<safirjoseproyecto@gmail.com>',
         to: email,
         subject: "Verificación de cuenta",
-        text: "Porfavor verifica tu correo electronico haciendo click en el botón de abajo",
-        html: `<a href="http://localhost:3000/seller-users/verify/${newId}">Verificar correo</a>`
+        text: "Verificación Technova",
+        html: `
+          <h1 style="Text-align:center; color:#15a6e6; font-size:24px; font-weight:bold; font-family:Arial, sans-serif">Verificación de cuenta</h1>
+          <p style="Text-align:justify; font-size:18px; font-family:Arial, sans-serif">Porfavor verifica tu correo electronico haciendo click en el botón de abajo</p>
+          <a style="padding: 12px 24px; background-color: #000; color: white; border-radius: 4px; text-decoration: none; font-weight: bold;" href="http://localhost:3000/seller-users/verify/${newId}">Verificar correo</a>
+        `
       })
 
       return true;
@@ -134,7 +138,7 @@ export class SellerUsersService {
 
   // Método que se encarga de cambiar la contraseña de un usuario vendedor.
   changePassword(id:string, newPassword: JSON) {
-    const query = "UPDAT seller_users SET user_password = $1 WHERE seller_id = $2";
+    const query = "UPDATE seller_users SET user_password = $1 WHERE seller_id = $2";
 
     const new_password = newPassword['new_password']; // Extrae la nueva contraseña del objeto JSON
 
