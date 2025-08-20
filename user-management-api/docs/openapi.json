@@ -74,11 +74,36 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "If the user is created successfully, a message saying “User created successfully” will be sent."
+          "200": {
+            "description": "If the user is created successfully, a message saying “User created successfully” will be sent.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"string",
+                  "example":"User created successfully"
+                }
+              }
+            }
           },
           "409": {
-            "description": "If an error occurs during user creation, an HttpException with status 409 and the error message will be sent."
+            "description": "If an error occurs during user creation, an HttpException with status 409 and the error message will be sent.",
+            "content":{
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error creating user"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -101,8 +126,36 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "If the password is changed without any problems, a message will be sent saying “User password successfully changed.”"
+          "200": {
+            "description": "If the password is changed without any problems, a message will be sent saying “User password successfully changed.”",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"string",
+                  "example":"User password successfully changed."
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If the password change is not implemented, a message will be sent saying “Error changing password for seller user: error”",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 501
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error changing password for seller user: error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -126,7 +179,35 @@
         ],
         "responses": {
           "200": {
-            "description": "If the user verification is successful, a message saying “User successfully verified” will be returned."
+            "description": "If the user verification is successful, a message saying “User successfully verified” will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User successfully verified"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"If an error occurs during the user verification, a message will be sent saying “Error verifying seller user: error”",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 501
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error verifying seller user:"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -137,6 +218,7 @@
     "/seller-users/{id}": {
       "get": {
         "operationId": "SellerUsersController_findInfo",
+        "security":[{"authToken":[]}],
         "parameters": [
           {
             "name": "id",
@@ -149,7 +231,34 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "If the user exists and has a valid JWT, an object containing the user's basic information will be returned.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/SellerUser"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If the user does not exist or the JWT is invalid, an error message 'Error finding seller user: error' will be returned.",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 501
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error finding seller user: error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -158,6 +267,7 @@
       },
       "patch": {
         "operationId": "SellerUsersController_update",
+        "security":[{"authToken":[]}],
         "parameters": [
           {
             "name": "id",
@@ -180,7 +290,35 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "If the jwt is valid and the user exists, then it will return a success message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User updated successfully"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "If the jwt is invalid or the user does not exist, an error message 'Error updating seller user: error' will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 501
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error updating seller user: error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -189,6 +327,7 @@
       },
       "delete": {
         "operationId": "SellerUsersController_remove",
+        "security":[{"authToken":[]}],
         "parameters": [
           {
             "name": "id",
@@ -201,7 +340,35 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "A message saying “User removed successfully” is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User removed successfully"
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If the jwt is invalid or the user does not exist, an error message 'Error removing seller user: error' will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 501
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Error removing seller user: error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -212,6 +379,7 @@
     "/seller-users/login": {
       "post": {
         "operationId": "SellerUsersController_logIn",
+        "security": [],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -224,8 +392,56 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Returns a JWT, which contains relevant user information so that they can interact with certain API endpoints.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+              }
+            }
+          },
+          "401":{
+            "description":"If the user's password or email address is invalid, an authorization error will be displayed 'Invalid user or password'.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid user or password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"If there is an internal server error, a generic error message will be displayed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -236,10 +452,73 @@
     "/brands": {
       "get": {
         "operationId": "BrandsController_findAll",
+        "security": [],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns a list of all brands.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Brand"
+                  },
+                  "example":[
+                    {
+                      "brand_id": "brand123",
+                      "name": "BrandName",
+                      "description": "BrandDescription"
+                    },
+                    {
+                      "brand_id": "brand456",
+                      "name": "AnotherBrand",
+                      "description": "AnotherBrandDescription"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404":{
+            "description": "If no brands are found, an error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No brands found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -250,6 +529,7 @@
     "/products": {
       "post": {
         "operationId": "ProductsController_create",
+        "security": [{"authToken":[]}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -262,8 +542,35 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Return the created product.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -272,10 +579,79 @@
       },
       "get": {
         "operationId": "ProductsController_listAll",
+        "security": [],
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Return a list of all products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductListItem"
+                  }
+                },
+                "example":[
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                    "product_name": "product 1",
+                    "price": "31.2",
+                    "product_image": "productImage.png",
+                    "brand_name": "Acer",
+                    "category_name": "Screen"
+                  },
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9f",
+                    "product_name": "product 2",
+                    "price": "45.0",
+                    "product_image": "productImage2.png",
+                    "brand_name": "Dell",
+                    "category_name": "Screen"
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "If no products are found, an error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Products not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -286,10 +662,67 @@
     "/products/my-products": {
       "post": {
         "operationId": "ProductsController_listSellerProducts",
+        "security":[{"authToken":[]}],
         "parameters": [],
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Returns a list of the seller's own products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductSellerListItem"
+                  }
+                },
+                "example":[
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                    "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                    "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                    "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                    "product_name": "product 1",
+                    "price": "31.2",
+                    "quantity": 12,
+                    "description": "description",
+                    "product_image": "productImage.png",
+                    "product_status": true
+                  },
+                  {
+                    "product_id": "664a66f0-12b8-45ab-a71c-181610261b9f",
+                    "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                    "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                    "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                    "product_name": "product 2",
+                    "price": "45.0",
+                    "quantity": 8,
+                    "description": "description",
+                    "product_image": "productImage2.png",
+                    "product_status": true
+                  }
+                ]
+              }
+            }
+          },
+          "500":{
+            "description": "If there is an internal server error, a generic error message will be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An error has occurred during the data extraction."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -300,6 +733,7 @@
     "/products/update-product": {
       "post": {
         "operationId": "ProductsController_updateProduct",
+        "security":[{"authToken":[]}],
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -312,8 +746,47 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Updates and returns an object with the new product data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductUpdated"
+                },
+                "example":{
+                  "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                  "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                  "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                  "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                  "product_name": "product 1",
+                  "price": "31.2",
+                  "quantity": 12,
+                  "description": "description",
+                  "product_image": "productImage.png",
+                  "product_status": true
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Return an error message when an internal server error occurs or the product is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An error has occurred during the product update."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -324,6 +797,7 @@
     "/products/{id}": {
       "get": {
         "operationId": "ProductsController_getProductDetail",
+        "security": [],
         "parameters": [
           {
             "name": "id",
@@ -336,7 +810,85 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Returns an object with the product data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties":{
+                    "product_id": {"type":"string"},
+                    "seller_id": {"type":"string"},
+                    "category_id": {"type":"string"},
+                    "brand_id": {"type":"string"},
+                    "product_name": {"type":"string"},
+                    "price": {"type":"string"},
+                    "quantity": {"type":"integer"},
+                    "description": {"type":"string"},
+                    "product_image": {"type":"string"},
+                    "product_status": {"type":"boolean"},
+                    "brand_name": {"type":"string"},
+                    "category_name": {"type":"string"},
+                    "seller_name": {"type":"string"}
+                  }
+
+                },
+                "example":{
+                  "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+                  "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+                  "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+                  "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+                  "product_name": "product 1",
+                  "price": "31.2",
+                  "quantity": 12,
+                  "description": "description",
+                  "product_image": "productImage.png",
+                  "product_status": true,
+                  "brand_name": "brand 1",
+                  "category_name": "category 1",
+                  "seller_name": "seller 1"
+                }
+              }
+            }
+          },
+          "404":{
+            "description": "Product not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product not found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"If an error occurs during the operation, an HTTP 500 error will be sent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 500
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "An error has occurred getting the product details"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -359,7 +911,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -417,7 +969,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -431,7 +983,7 @@
         "operationId": "BuyerUsersController_getUserData",
         "parameters": [],
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -445,7 +997,7 @@
         "operationId": "BuyerUsersController_changePassword",
         "parameters": [],
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -492,7 +1044,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -528,7 +1080,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -575,7 +1127,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -611,7 +1163,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -658,7 +1210,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -706,7 +1258,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": ""
           }
         },
@@ -743,7 +1295,31 @@
     "version": "1.0",
     "contact": {}
   },
-  "tags": ["Categories","Brands","BuyerUsers","Sales","Products","SellerUsers"],
+  "tags": [{
+      "name": "Categories",
+      "description": "Operations related to product categories"
+    },
+    {
+      "name": "Brands",
+      "description": "Operations for brand management"
+    },
+    {
+      "name": "BuyerUsers",
+      "description": "Operations for buyer user management"
+    },
+    {
+      "name": "Sales",
+      "description": "Operations for sales management"
+    },
+    {
+      "name": "Products",
+      "description": "Operations for product management"
+    },
+    {
+      "name": "SellerUsers",
+      "description": "Operations for seller user management"
+    }
+  ],
   "servers": [
     {
       "url": "http://localhost:3000",
@@ -992,6 +1568,154 @@
           "category_id": "category123",
           "category_name": "PC",
           "category_description": "description"
+        }
+      },
+      "SellerUser":{
+        "type":"object",
+        "properties": {
+          "seller_name": {"type": "string"},
+          "company_name": {"type": "string"},
+          "address": {"type": "string"},
+          "email": {"type": "string"},
+          "user_image": {"type": "string"},
+          "cellphone_number": {"type": "string"},
+          "user_type": {"type": "integer"}
+        },
+        "example":{
+          "seller_name": "Seller_Test",
+          "company_name": null,
+          "address": "Calle 00,00-00,city,country,neigborhood,postalcode",
+          "email": "xstremiscx12@gmail.com",
+          "user_image": "/basic_user_image.png",
+          "cellphone_number": "0000000000",
+          "user_type": 0
+        }
+      },
+      "Brand":{
+        "type": "object",
+        "properties": {
+          "brand_id": {"type": "string"},
+          "brand_name": {"type": "string"},
+          "description": {"type": "string"}
+        },
+        "example":{
+          "brand_id": "brand123",
+          "brand_name": "BrandName",
+          "description": "BrandDescription"
+        }
+      },
+      "Product":{
+        "type":"object",
+        "properties":{
+          "message": {"type":"string"},
+          "product_object": {
+              "product_id": {"type":"string"},
+              "seller_id": {"type":"string"},
+              "category_id": {"type":"string"},
+              "brand_id": {"type":"string"},
+              "product_name": {"type":"string"},
+              "price": {"type":"string"},
+              "quantity": {"type":"integer"},
+              "description": {"type":"string"},
+              "product_image": {"type":"string"},
+              "product_status": {"type":"boolean"}
+          }
+        },
+        "example":{
+          "message": "Product created successfully.",
+          "product_object": {
+            "product_id": "ccef3f06-730c-4311-8dbf-364f7b6afbc9",
+            "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+            "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+            "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+            "product_name": "MSI Dragon Design hz144 full hd",
+            "price": "9000000",
+            "quantity": 18,
+            "description": "description",
+            "product_image": "productImage.png",
+            "product_status": true
+          }
+        }
+      },
+      "ProductListItem": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "product_id": {"type": "string"},
+            "product_name": {"type": "string"},
+            "price": {"type": "string"},
+            "product_image": {"type": "string"},
+            "brand_name": {"type": "string"},
+            "category_name": {"type": "string"}
+          }
+        },
+        "example": {
+          "product": {
+            "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+            "product_name": "product 1",
+            "price": "31.2",
+            "product_image": "productImage.png",
+            "brand_name": "Acer",
+            "category_name": "Screen"
+          }
+        }
+      },
+      "ProductSellerListItem":{
+        "type": "object",
+        "properties": {
+          "product": {
+            "product_id": {"type": "string"},
+            "seller_id": {"type": "string"},
+            "category_id": {"type": "string"},
+            "brand_id": {"type": "string"},
+            "product_name": {"type": "string"},
+            "price": {"type": "string"},
+            "quantity": {"type": "integer"},
+            "description": {"type": "string"},
+            "product_image": {"type": "string"},
+            "product_status": {"type": "boolean"}
+          }
+        },
+        "example": {
+          "product": {
+            "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+            "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+            "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+            "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+            "product_name": "product 1",
+            "price": "31.2",
+            "quantity": 12,
+            "description": "description",
+            "product_image": "productImage.png",
+            "product_status": true
+          }
+        }
+      },
+      "ProductUpdated":{
+        "type":"object",
+        "properties":{
+          "product_id": {"type":"string"},
+          "seller_id": {"type":"string"},
+          "category_id": {"type":"string"},
+          "brand_id": {"type":"string"},
+          "product_name": {"type":"string"},
+          "price": {"type":"string"},
+          "quantity": {"type":"integer"},
+          "description": {"type":"string"},
+          "product_image": {"type":"string"},
+          "product_status": {"type":"boolean"}
+        },
+        "example":{
+          "product_id": "664a66f0-12b8-45ab-a71c-181610261b9e",
+          "seller_id": "e54d64d4-833b-43ba-96b9-97fc5fb4c276",
+          "category_id": "9997a30a-3bae-4a1f-95ae-39c396246e63",
+          "brand_id": "bcdeb73b-b97a-4c26-8ed6-17c15df4b7af",
+          "product_name": "product 1",
+          "price": "31.2",
+          "quantity": 12,
+          "description": "description",
+          "product_image": "productImage.png",
+          "product_status": true
         }
       }
     }
