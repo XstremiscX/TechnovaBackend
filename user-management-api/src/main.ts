@@ -16,6 +16,7 @@ async function bootstrap() {
     .addBearerAuth() // Para endpoints protegidos con JWT
     .build();
   const document = SwaggerModule.createDocument(app, config);
+  
   SwaggerModule.setup('api', app, document); // Sirve Swagger UI en /api (opcional)
 
   // Exponer el archivo OpenAPI JSON
@@ -31,6 +32,7 @@ async function bootstrap() {
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true
   })
+
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
   }))
