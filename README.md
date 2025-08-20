@@ -77,7 +77,7 @@ Follow these steps to set up and run the project locally:
    - For `GOOGLE_APP_PASSWORD`, use a Gmail app password (create one in your Google Account settings).
 
 4. **Set up the database schema**
-   -  Download or copy the database ![Schema](https://raw.githubusercontent.com/XstremiscX/TechnovaBackend/refs/heads/main/database-schema.sql) and run it   into your database
+   -  Download or copy the database [Schema](https://raw.githubusercontent.com/XstremiscX/TechnovaBackend/refs/heads/main/database-schema.sql) and run it   into your database
 
 5. **Run the Application**:
    - **Development Mode** (with hot-reload):
