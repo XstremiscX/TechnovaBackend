@@ -1,3 +1,7 @@
+# STAND_BY
+
+This API is outdated and doesn't comply with many of the necessary best practices. To see my new knowledge and how I'm implementing it, please go to this repository: [New Api Proyect](https://github.com/XstremiscX/technova-api-managment)
+
 # E-commerce Backend API
 
 Welcome to the backend of an e-commerce platform built with **NestJS** and **PostgreSQL**. This REST API handles user management, product listings, and purchases, supporting two user roles: **sellers** and **buyers**. It’s designed to be secure, scalable, and easy to integrate with a frontend (e.g., Angular).
